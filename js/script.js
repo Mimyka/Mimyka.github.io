@@ -1,27 +1,29 @@
+// VAR INIT
+
+var mainSections = document.getElementsByClassName('section');
+
 var sections = {
-  nodeList: document.getElementsByClassName('section'),
+  nodeList: mainSections,
   actual: 0,
-  rz: [],
+  ty: {active: 0, inactive: 100},
+  right: -1,
+  left: 1,
   timeout: [],
-  tz: Math.round((window.innerWidth/2)/Math.tan(Math.PI/document.querySelectorAll('.section').length)),
   actualise: function() {
     for (var i = 0; i < sections.nodeList.length; i++) {
-      sections.nodeList[i].style.transform = "rotateY(" + sections.rz[i] + "deg) translateZ("+sections.tz+"px)";
+      sections.nodeList[i].style.transform = "translateX("+(sections.actual == i ? sections.ty.active : sections.ty.inactive)+"%)";
     }
   },
-  // TODO:40 : Dry the section.move() function
   move: function(d) {
-    for (var i = 0; i < sections.nodeList.length; i++) {
-      sections.rz[i] += d;
-    }
-    sections.actualise();
-    if(d === -90){
+    if(d === -1){
       sections.actual = (sections.actual >= sections.nodeList.length-1)? 0 : sections.actual+1;
     }
     else{
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
-    document.querySelectorAll('.app')[sections.actual].appendChild(character.target);
+    document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
+
+    sections.actualise();
   },
   forceMove: function(d, w) {
     w = (d < 0)? character.speed : -character.speed;
@@ -40,32 +42,16 @@ var sections = {
 };
 
 var cfg = {
-  keyDelay: 150
+  keyDelay: 100
 };
-
-
-// IDEA : Constructor function to instance some character
 
 var character = {
   pos: 50,
   speed: 4,
   jumpPotential: 25,
-  target: document.querySelector(".character"),
+  target: document.getElementsByClassName("character")[0],
   frameState: true,
-  move: function(speed) {
-    character.target.style.transform = (speed < 0)? "translateX(-50%)" : "translateX(-50%) rotateY(180deg)";
-    character.pos += speed;
-    if(character.pos >= 100){
-      sections.move(-90);
-      character.pos = character.speed;
-    }else if(character.pos <= 0){
-      sections.move(90);
-      character.pos = 100-character.speed;
-    }
-    character.target.style.left = character.pos + "%";
-
-    // TODO:30 : Dry the frame code and separate it from the move function
-
+  frame: function(){
     if (character.frameState) {
       character.target.src = "./img/characterMove1.png";
       character.frameState = !character.frameState;
@@ -76,6 +62,20 @@ var character = {
     setTimeout(function() {
       character.target.src = "./img/character.png";
     }, (cfg.keyDelay/2));
+  },
+  move: function(speed) {
+    character.target.style.transform = (speed < 0)? "translateX(-50%)" : "translateX(-50%) rotateY(180deg)";
+    character.pos += speed;
+    if(character.pos >= 100){
+      sections.move(sections.right);
+      character.pos = character.speed;
+    }else if(character.pos <= 0){
+      sections.move(sections.left);
+      character.pos = 100-character.speed;
+    }
+    character.target.style.left = character.pos + "%";
+
+    character.frame();
   },
   jump: function() {
     character.target.src = "./img/characterJump.png";
@@ -100,11 +100,18 @@ var character = {
     character.speed = 4;
     character.jumpPotential = 25;
   }
+};
+
+// TODO : Slimes and other cool things + apply constructor function to character
+// TODO : 60 FPS limitation
+// TODO : Optimisation for ooooold "navigator"
+
+function Slime(target) {
+  this.target = target;
+
+  // this.init();
 }
 
-for (var i = 0; i < sections.nodeList.length; i++) {
-  sections.rz.push(90*i);
-}
 sections.actualise();
 character.target.style.transition = (cfg.keyDelay/1000) + "s left linear, " + (cfg.keyDelay/1000) + "s bottom linear";
 
@@ -153,16 +160,11 @@ window.onkeydown = throttle(function(e) {
     }
 },cfg.keyDelay);
 
-window.onresize = function() {
-  sections.tz = Math.round((window.innerWidth/2)/Math.tan(Math.PI/document.querySelectorAll('main section').length));
-  sections.actualise();
-}
-
-for (var i = 0; i < document.querySelectorAll('.doorA').length; i++) {
-  document.querySelectorAll('.doorA')[i].onclick = function() {
+for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
+  document.getElementsByClassName('doorL')[i].onclick = function() {
     sections.forceMove(90);
   }
-  document.querySelectorAll('.doorB')[i].onclick = function() {
+  document.getElementsByClassName('doorR')[i].onclick = function() {
     sections.forceMove(-90);
   }
 }

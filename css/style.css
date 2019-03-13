@@ -9,12 +9,6 @@
   font-family: "Raleway";
 }
 
-@font-face {
-  src: url(../font/GloriaHallelujah.ttf);
-  font-family: 'Gloria Hallelujah';
-}
-
-
 /*UNIVERSAL CHANGEMENT*/
 *, *:before, *:after{
   box-sizing: border-box;
@@ -44,19 +38,27 @@ h1{
 }
 
 h2{
-  font-size: 27px;
+  font-size: 22px;
 }
 
 h3{
   font-size: 20px;
 }
 
-p{
+p, blockquote{
   font-family: "playfair";
   font-size: 14px;
   line-height: 28px;
   color: #595959;
   text-align: justify;
+}
+
+blockquote
+{
+  font-size: 16px;
+  margin-left: 32px;
+  border-left: 4px solid #CCC;
+  padding-left: 8px;
 }
 
 /*
@@ -80,10 +82,6 @@ p{
   height: 100%;
   width: 100%;
   position: absolute;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  transition: 0.7s all ease-in;
   overflow: hidden;
 }
 
@@ -95,18 +93,14 @@ p{
   background-color: #888;
 }
 
-#mirror{
-  display: none;
-  transform: rotateY(180deg);
-  filter: hue-rotate(180deg);
-}
-
-/*TODO : Correct the unstylish bar who is caused by overflow-y: scroll*/
-
 .wrapper{
   height: calc(100% - 200px);
   padding: 20px;
   overflow-y: scroll;
+}
+
+#home .wrapper{
+  overflow: hidden;
 }
 
 .item{
@@ -136,7 +130,7 @@ p{
   padding: 10px;
 }
 
-.doorA, .doorB ,.character, .slime{
+.doorL, .doorR ,.character, .slime{
   position: absolute;
   bottom: 0%;
   image-rendering: -webkit-optimize-contrast;
@@ -152,12 +146,7 @@ p{
   z-index: 10;
 }
 
-.slime{
-  transform: translateX(-50%);
-  height: 100px;
-}
-
-.doorA, .doorB{
+.doorL, .doorR{
   height: 120px;
   cursor: pointer;
   animation-name: door;
@@ -166,27 +155,27 @@ p{
   animation-timing-function: ease-out;
 }
 
-.doorA{
+.doorL{
   left: 0%;
 }
 
-.doorB{
+.doorR{
   transform: translateX(-100%);
   left: 100%;
 }
 
 /*cube effect*/
 #home{
-  transform: rotateY(0deg) translateZ(50vw);
+  transform: translateX(0);
 }
 #about{
-  transform: rotateY(90deg) translateZ(50vw);
+  transform: translateX(100%);
 }
 #project{
-  transform: rotateY(180deg) translateZ(50vw);
+  transform: translateX(100%);
 }
 #contact{
-  transform: rotateY(270deg) translateZ(50vw);
+  transform: translateX(100%);
 }
 
 /*keyframes*/
@@ -201,8 +190,6 @@ p{
     filter: brightness(1.3);
   }
 }
-
-/*IDEA : Do more reusable CSS component*/
 
 /*
  #     #
@@ -225,23 +212,47 @@ p{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url(../img/mondrian.png);
-  background-size: 390px;
+  background-image: url(../img/ground.png);
+  background-size: 120px;
   background-position: top left;
-  border-bottom: 8px solid #AAA;
-  border-top: 8px solid #AAA;
+  background-repeat: repeat-x;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+#home .wrapper .headings{
+  border: 1px solid;
+  border-radius: 3px;
+  background-color: #eee;
+  padding: 15px 7px 7px 7px;
+  position: relative;
+}
+
+#home .wrapper .headings:before{
+  content: "";
+  display: block;
+  border-style: solid;
+  position: absolute;
+  top: -10px;
+  left: 45%;
+  left: calc(50% - 10px);
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent #eee transparent;
+  width: 0;
+  height: 0;
 }
 
 #home .wrapper header h1{
   text-align: center;
-  line-height: 20px;
+  line-height: 30px;
 }
 
 #home .wrapper header h2{
   text-align: center;
   font-size: 25px;
   color: #393939;
-  font-family: 'Gloria Hallelujah';
 }
 
 #home .wrapper .content{
@@ -348,8 +359,6 @@ p{
  #    #  #      #    # #      #    # #   ## #    # #  #  #  #
  #     # ######  ####  #       ####  #    #  ####  #   ##   ######
 */
-
-/*TODO : Dry responsive code and optimise it*/
 
 @media (min-width: 560px){
   p{
