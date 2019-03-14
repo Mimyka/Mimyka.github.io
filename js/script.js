@@ -11,7 +11,7 @@ var sections = {
   timeout: [],
   actualise: function() {
     for (var i = 0; i < sections.nodeList.length; i++) {
-      sections.nodeList[i].style.transform = "translateX("+(sections.actual == i ? sections.ty.active : sections.ty.inactive)+"%)";
+      sections.nodeList[i].style.left = (sections.actual == i ? sections.ty.active : sections.ty.inactive)+"%";
     }
   },
   move: function(d) {

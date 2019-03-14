@@ -166,16 +166,16 @@ blockquote
 
 /*cube effect*/
 #home{
-  transform: translateX(0);
+  left: 0%;
 }
 #about{
-  transform: translateX(100%);
+  left: 100%;
 }
 #project{
-  transform: translateX(100%);
+  left: 100%;
 }
 #contact{
-  transform: translateX(100%);
+  left: 100%;
 }
 
 /*keyframes*/
