@@ -145,8 +145,11 @@ blockquote
   -ms-interpolation-mode: nearest-neighbor;
 }
 
-.character{
+.character, .slime{
   transform: translateX(-50%);
+}
+
+.character{
   left: 50%;
   height: 100px;
   z-index: 10;

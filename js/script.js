@@ -1,5 +1,5 @@
 // Compatibility
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {callback();};
 
 // VAR INIT
 var mainSections = document.getElementsByClassName('section');
@@ -108,14 +108,50 @@ var character = {
   }
 };
 
-// TODO : Slimes and other cool things + apply constructor function to character
-// TODO : 60 FPS limitation
-// TODO : Optimisation for ooooold "navigator"
+function Slime(target, pos) {
+  var _ = this; // scope
+  _.pos = pos || 10+Math.random()*80;
+  _.speed = 10;
+  _.jumpPotential = 50;
+  _.target = target;
 
-function Slime(target) {
-  this.target = target;
+  _.move = function(speed) {
+    _.pos += speed;
+    if(_.pos >= 100){
+      _.pos = 100;
+    }else if(_.pos <= 0){
+      _.pos = 0;
+    }
+    _.target.style.left = _.pos + "%";
+  };
 
-  // this.init();
+  _.jump = function() {
+    _.target.style.bottom = _.jumpPotential + "%";
+    setTimeout(function() {
+      _.target.style.bottom = "0%";
+    }, (cfg.keyDelay/2));
+  };
+
+  _.init = function(){
+    _.target.style.transition = ".15s left linear, .15s bottom linear";
+    _.target.style.height  = (32+16*Math.random())+"px";
+    _.target.onclick = function() {
+      _.target.style.filter = "hue-rotate("+Math.random()*360+"deg)"
+    }
+    _.ai();
+  };
+
+  _.ai = function(){
+    _.move(_.speed * (Math.random()-Math.random()));
+    _.jump();
+
+    setTimeout(_.ai,750+(Math.random()*500));
+  };
+}
+
+for (var i = 0; i < document.getElementsByClassName("slime").length; i++) {
+  slime = new Slime(document.getElementsByClassName("slime")[i]);
+  slime.init();
 }
 
 sections.actualise();
