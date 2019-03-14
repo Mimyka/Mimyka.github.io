@@ -75,13 +75,13 @@ blockquote
 #main{
   height: 100%;
   width: 100%;
-  position: absolute;
+  position: relative;
   transform-style: preserve-3d;
 }
 
 .section{
   height: 100%;
-  width: 100%;
+  right: 0%;
   left: 100%;
   position: absolute;
   overflow: hidden;
