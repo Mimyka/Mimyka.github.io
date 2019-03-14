@@ -78,11 +78,16 @@ blockquote
   transform-style: preserve-3d;
 }
 
-#main .section{
+.section{
   height: 100%;
   width: 100%;
+  left: 100%;
   position: absolute;
   overflow: hidden;
+}
+
+#main .active{
+  left: 0%;
 }
 
 .line{
@@ -161,20 +166,6 @@ blockquote
 
 .doorR{
   transform: translateX(-100%);
-  left: 100%;
-}
-
-/*cube effect*/
-#home{
-  left: 0%;
-}
-#about{
-  left: 100%;
-}
-#project{
-  left: 100%;
-}
-#contact{
   left: 100%;
 }
 

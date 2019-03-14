@@ -5,20 +5,25 @@ var mainSections = document.getElementsByClassName('section');
 var sections = {
   nodeList: mainSections,
   actual: 0,
-  ty: {active: 0, inactive: 100},
   right: -1,
   left: 1,
   timeout: [],
   actualise: function() {
     for (var i = 0; i < sections.nodeList.length; i++) {
-      sections.nodeList[i].style.left = (sections.actual == i ? sections.ty.active : sections.ty.inactive)+"%";
+      if (sections.actual == i) {
+        sections.nodeList[i].classList.add('active');
+      }else{
+        if (sections.nodeList[i].classList.contains('active')) {
+          sections.nodeList[i].classList.remove('active');
+        }
+      }
     }
   },
   move: function(d) {
-    if(d === -1){
+    if(d === this.right){
       sections.actual = (sections.actual >= sections.nodeList.length-1)? 0 : sections.actual+1;
     }
-    else{
+    else if(d === this.left){
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
     document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
@@ -42,7 +47,7 @@ var sections = {
 };
 
 var cfg = {
-  keyDelay: 100
+  keyDelay: 125
 };
 
 var character = {
