@@ -1,7 +1,8 @@
+// Compatibility
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
 // VAR INIT
-
 var mainSections = document.getElementsByClassName('section');
-
 var sections = {
   nodeList: mainSections,
   actual: 0,
@@ -35,7 +36,7 @@ var sections = {
     sections.clearAllEvent();
     for (var i = 0; i < (100/character.speed); i++) {
       sections.timeout.push(setTimeout(function() {
-        character.move(w);
+        requestAnimationFrame(character.move(w));
       }, i*cfg.keyDelay));
     }
   },
@@ -47,7 +48,7 @@ var sections = {
 };
 
 var cfg = {
-  keyDelay: 125
+  keyDelay: 100
 };
 
 var character = {
@@ -139,18 +140,18 @@ window.onkeydown = throttle(function(e) {
         case "ArrowLeft":
         case "q":
         case "h":
-          character.move(-character.speed);
+          requestAnimationFrame(character.move(-character.speed));
         break;
         case "ArrowRight":
         case "d":
         case "l":
-          character.move(character.speed);
+          requestAnimationFrame(character.move(character.speed));
         break;
         case "ArrowUp":
         case "z":
         case " ":
         case "k":
-          character.jump();
+          requestAnimationFrame(character.jump());
         break;
         case "+":
           character.grow();
