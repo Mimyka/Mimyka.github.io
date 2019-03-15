@@ -36,7 +36,7 @@ var sections = {
     sections.clearAllEvent();
     for (var i = 0; i < (100/character.speed); i++) {
       sections.timeout.push(setTimeout(function() {
-        requestAnimationFrame(character.move(w));
+        character.move(w);
       }, i*cfg.keyDelay));
     }
   },
@@ -53,24 +53,38 @@ var cfg = {
 
 var character = {
   pos: 50,
+  direction: "left",
   speed: 4,
+  moving: false,
+  jumping: false,
   jumpPotential: 25,
   target: document.getElementsByClassName("character")[0],
-  frameState: true,
-  frame: function(){
-    if (character.frameState) {
+  inMoveFrame: false,
+  moveFrame: function(){
+    if (!character.inMoveFrame) {
+      character.inMoveFrame = true;
       character.target.src = "./img/characterMove1.png";
-      character.frameState = !character.frameState;
-    }else{
-      character.target.src = "./img/characterMove2.png";
-      character.frameState = !character.frameState;
+      setTimeout(function() {
+        character.target.src = "./img/characterMove2.png";
+      }, (cfg.keyDelay));
+      setTimeout(function() {
+        character.target.src = "./img/character.png";
+        character.inMoveFrame = false;
+      }, (cfg.keyDelay*2));
     }
-    setTimeout(function() {
-      character.target.src = "./img/character.png";
-    }, (cfg.keyDelay/2));
+  },
+  paint: function(){
+    if (character.moving) {
+      character.target.style.transform = (character.direction == "right")? "translateX(-50%)" : "translateX(-50%) rotateY(180deg)";
+      character.target.style.left = character.pos + "%";
+      character.moveFrame();
+
+      character.moving = false;
+    }
   },
   move: function(speed) {
-    character.target.style.transform = (speed < 0)? "translateX(-50%)" : "translateX(-50%) rotateY(180deg)";
+    character.moving = true;
+    character.direction = (speed < 0)? "right" : "left";
     character.pos += speed;
     if(character.pos >= 100){
       sections.move(sections.right);
@@ -79,17 +93,21 @@ var character = {
       sections.move(sections.left);
       character.pos = 100-character.speed;
     }
-    character.target.style.left = character.pos + "%";
-
-    character.frame();
   },
   jump: function() {
-    character.target.src = "./img/characterJump.png";
-    character.target.style.bottom = character.jumpPotential + "%";
-    setTimeout(function() {
-      character.target.src = "./img/character.png";
-      character.target.style.bottom = "0%";
-    }, (cfg.keyDelay/2));
+    if (!character.jumping) {
+      character.target.src = "./img/characterJump.png";
+      character.target.style.bottom = character.jumpPotential + "%";
+      character.jumping = true;
+
+      setTimeout(function() {
+        character.target.src = "./img/character.png";
+        character.target.style.bottom = "0%";
+        setTimeout(function(){
+          character.jumping = false;
+        },100);
+      }, 150);
+    }
   },
   grow: function() {
     character.target.style.height = "150px";
@@ -112,17 +130,25 @@ function Slime(target, pos) {
   var _ = this; // scope
   _.pos = pos || 10+Math.random()*80;
   _.speed = 10;
+  _.moving = false;
   _.jumpPotential = 50;
   _.target = target;
 
+  _.paint = function(){
+    if (_.moving) {
+      _.target.style.left = _.pos + "%";
+      _.moving = false;
+    }
+  };
+
   _.move = function(speed) {
+    _.moving = true;
     _.pos += speed;
     if(_.pos >= 100){
       _.pos = 100;
     }else if(_.pos <= 0){
       _.pos = 0;
     }
-    _.target.style.left = _.pos + "%";
   };
 
   _.jump = function() {
@@ -149,10 +175,8 @@ function Slime(target, pos) {
   };
 }
 
-for (var i = 0; i < document.getElementsByClassName("slime").length; i++) {
-  slime = new Slime(document.getElementsByClassName("slime")[i]);
-  slime.init();
-}
+var slime = new Slime(document.getElementsByClassName("slime")[0]);
+slime.init();
 
 sections.actualise();
 character.target.style.transition = (cfg.keyDelay/1000) + "s left linear, " + (cfg.keyDelay/1000) + "s bottom linear";
@@ -170,24 +194,36 @@ function throttle(callback, delay) {
     };
 }
 
-// EVENT(s)
+// Event
+
+for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
+  document.getElementsByClassName('doorL')[i].onclick = function() {
+    sections.forceMove(90);
+  }
+  document.getElementsByClassName('doorR')[i].onclick = function() {
+    sections.forceMove(-90);
+  }
+}
+
+// Mapping
+
 window.onkeydown = throttle(function(e) {
     switch (e.key) {
         case "ArrowLeft":
         case "q":
         case "h":
-          requestAnimationFrame(character.move(-character.speed));
+          character.move(-character.speed);
         break;
         case "ArrowRight":
         case "d":
         case "l":
-          requestAnimationFrame(character.move(character.speed));
+          character.move(character.speed);
         break;
         case "ArrowUp":
         case "z":
         case " ":
         case "k":
-          requestAnimationFrame(character.jump());
+          character.jump();
         break;
         case "+":
           character.grow();
@@ -202,11 +238,13 @@ window.onkeydown = throttle(function(e) {
     }
 },cfg.keyDelay);
 
-for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
-  document.getElementsByClassName('doorL')[i].onclick = function() {
-    sections.forceMove(90);
-  }
-  document.getElementsByClassName('doorR')[i].onclick = function() {
-    sections.forceMove(-90);
-  }
+// Limit rate 60 fps (16ms =~ 1 frame)
+
+function gameloop(){
+  character.paint();
+  slime.paint();
+
+  requestAnimationFrame(gameloop);
 }
+
+requestAnimationFrame(gameloop);
