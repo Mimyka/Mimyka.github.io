@@ -28,6 +28,7 @@ var sections = {
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
     document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
+    character.paint();
 
     sections.actualise();
   },
