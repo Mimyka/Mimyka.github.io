@@ -27,8 +27,9 @@ var sections = {
     else if(d === this.left){
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
+    character.sectionTransition();
     document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
-    character.moving = true;
+    character.setTransition();
 
     sections.actualise();
   },
@@ -61,6 +62,13 @@ var character = {
   jumpPotential: 25,
   target: document.getElementsByClassName("character")[0],
   inMoveFrame: false,
+  setTransition: function(){
+    character.target.style.transition = (cfg.keyDelay/1000) + "s left linear, " + (cfg.keyDelay/1000) + "s bottom linear";
+  },
+  sectionTransition: function(){
+    character.target.style.transition = "";
+    character.moving = true;
+  },
   moveFrame: function(){
     if (!character.inMoveFrame) {
       character.inMoveFrame = true;
@@ -180,7 +188,7 @@ var slime = new Slime(document.getElementsByClassName("slime")[0]);
 slime.init();
 
 sections.actualise();
-character.target.style.transition = (cfg.keyDelay/1000) + "s left linear, " + (cfg.keyDelay/1000) + "s bottom linear";
+character.setTransition();
 
 // FUNCTIONS
 
@@ -209,30 +217,41 @@ for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
 // Mapping
 
 window.onkeydown = throttle(function(e) {
+    e.key = e.key || e.code;
     switch (e.key) {
         case "ArrowLeft":
+        case "KeyQ":
+        case "KeyH":
         case "q":
         case "h":
           character.move(-character.speed);
         break;
         case "ArrowRight":
+        case "KeyD":
+        case "KeyL":
         case "d":
         case "l":
           character.move(character.speed);
         break;
         case "ArrowUp":
+        case "KeyZ":
+        case "Spacebar":
+        case "KeyK":
         case "z":
         case " ":
         case "k":
           character.jump();
         break;
         case "+":
+        case "NumpadAdd":
           character.grow();
         break;
         case "-":
+        case "NumpadSubtract":
           character.shrink();
         break;
         case "=":
+        case "Equal":
           character.normal();
         break;
         default:
