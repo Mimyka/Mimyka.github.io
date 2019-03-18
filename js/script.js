@@ -10,6 +10,9 @@ var sections = {
   left: 1,
   timeout: [],
   actualise: function() {
+    character.sectionTransition();
+    document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
+
     for (var i = 0; i < sections.nodeList.length; i++) {
       if (sections.actual == i) {
         sections.nodeList[i].classList.add('active');
@@ -19,6 +22,9 @@ var sections = {
         }
       }
     }
+
+    character.moving = true;
+    setTimeout(character.setTransition, 5);
   },
   move: function(d) {
     if(d === this.right){
@@ -27,10 +33,6 @@ var sections = {
     else if(d === this.left){
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
-    character.sectionTransition();
-    document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
-    character.setTransition();
-
     sections.actualise();
   },
   forceMove: function(d, w) {
@@ -67,7 +69,6 @@ var character = {
   },
   sectionTransition: function(){
     character.target.style.transition = "";
-    character.moving = true;
   },
   moveFrame: function(){
     if (!character.inMoveFrame) {
@@ -187,7 +188,6 @@ function Slime(target, pos) {
 var slime = new Slime(document.getElementsByClassName("slime")[0]);
 slime.init();
 
-sections.actualise();
 character.setTransition();
 
 // FUNCTIONS
