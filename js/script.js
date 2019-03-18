@@ -38,7 +38,7 @@ var sections = {
   forceMove: function(d, w) {
     w = (d < 0)? character.speed : -character.speed;
     sections.clearAllEvent();
-    for (var i = 0; i < (100/character.speed); i++) {
+    for (var i = 1; i <= (100/character.speed); i++) {
       sections.timeout.push(setTimeout(function() {
         character.move(w);
       }, i*cfg.keyDelay));
