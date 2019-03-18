@@ -10,6 +10,7 @@ var sections = {
   left: 1,
   timeout: [],
   actualise: function() {
+    var now = Date.now();
     character.sectionTransition();
     document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
 
@@ -24,7 +25,8 @@ var sections = {
     }
 
     character.moving = true;
-    setTimeout(character.setTransition, 5);
+    var delay = now - Date.now();
+    setTimeout(character.setTransition, 15+delay);
   },
   move: function(d) {
     if(d === this.right){
