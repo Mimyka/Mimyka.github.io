@@ -26,7 +26,7 @@ var sections = {
 
     character.moving = true;
     var delay = now - Date.now();
-    setTimeout(character.setTransition, 15+delay);
+    setTimeout(character.setTransition, 16);
   },
   move: function(d) {
     if(d === this.right){
@@ -259,8 +259,6 @@ window.onkeydown = throttle(function(e) {
         default:
     }
 },cfg.keyDelay);
-
-// Limit rate 60 fps (16ms =~ 1 frame)
 
 function gameloop(){
   character.paint();
