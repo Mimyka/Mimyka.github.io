@@ -54,8 +54,8 @@ var sections = {
     left: function(){
       sections.forceMoving = true;
       keyboard.left = true;
-    },
-  },
+    }
+  }
 };
 
 var character = {
@@ -106,7 +106,7 @@ var character = {
       character.direction = "left";
       character.pos += -character.speed;
       character.checkPosition();
-    },
+    }
   },
   checkPosition: function(){
     if(character.pos >= 100){
@@ -170,8 +170,8 @@ function Slime(target, pos) {
     _.target.style.transition = "0.15s left linear, 0.15s bottom linear";
     _.target.style.height  = (32+16*Math.random())+"px";
     _.target.onclick = function() {
-      _.target.style.filter = "hue-rotate("+Math.random()*360+"deg)"
-    }
+      _.target.style.filter = "hue-rotate("+Math.random()*360+"deg)";
+    };
     _.ai();
   };
 
@@ -181,7 +181,7 @@ function Slime(target, pos) {
 
     setTimeout(_.ai,750+(Math.random()*500));
   };
-};
+}
 
 var keyboard = {
   up : false,
@@ -246,10 +246,10 @@ function keyManager(k, b) {
 for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
   document.getElementsByClassName('doorL')[i].onclick = function() {
     sections.forceMove.left();
-  }
+  };
   document.getElementsByClassName('doorR')[i].onclick = function() {
     sections.forceMove.right();
-  }
+  };
 }
 
 // Mapping
