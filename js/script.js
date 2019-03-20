@@ -73,12 +73,12 @@ var character = {
   moveFrame: function(){
     if (!character.inMoveFrame) {
       character.inMoveFrame = true;
-      character.target.src = "./img/characterMove1.png";
+      character.target.style.backgroundPosition = "-75px 0";
       setTimeout(function() {
-        character.target.src = "./img/characterMove2.png";
+        character.target.style.backgroundPosition = "-150px 0";
       }, (cfg.keyDelay));
       setTimeout(function() {
-        character.target.src = "./img/character.png";
+        character.target.style.backgroundPosition = "0 0";
         character.inMoveFrame = false;
       }, (cfg.keyDelay*2));
     }
@@ -106,12 +106,12 @@ var character = {
   },
   jump: function() {
     if (!character.jumping) {
-      character.target.src = "./img/characterJump.png";
+      character.target.style.backgroundPosition = "-225px 0";
       character.target.style.bottom = character.jumpPotential + "%";
       character.jumping = true;
 
       setTimeout(function() {
-        character.target.src = "./img/character.png";
+        character.target.style.backgroundPosition = "0 0";
         character.target.style.bottom = "0%";
         setTimeout(function(){
           character.jumping = false;
