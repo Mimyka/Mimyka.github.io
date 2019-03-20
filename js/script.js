@@ -76,19 +76,18 @@ var character = {
   moveFrame: function(){
     if (!character.inMoveFrame) {
       character.inMoveFrame = true;
-      character.target.style.backgroundPosition = "-75px 0";
+      character.target.style.backgroundPosition = ((character.direction == "left")? -75 : -375) + "px 0";
       setTimeout(function() {
-        character.target.style.backgroundPosition = "-150px 0";
+        character.target.style.backgroundPosition = ((character.direction == "left")? -150 : -450) + "px 0";
       }, 150);
       setTimeout(function() {
-        character.target.style.backgroundPosition = "0 0";
+        character.target.style.backgroundPosition = ((character.direction == "left")? 0 : -300) + "px 0";
         character.inMoveFrame = false;
       }, 250);
     }
   },
   paint: function(){
     if (character.moving) {
-      character.target.style.transform = (character.direction == "left")? "translateX(-50%)" : "translateX(-50%) rotateY(180deg)";
       character.target.style.left = character.pos + "%";
       character.moveFrame();
 
@@ -120,12 +119,12 @@ var character = {
   },
   jump: function() {
     if (!character.jumping) {
-      character.target.style.backgroundPosition = "-225px 0";
+      character.target.style.backgroundPosition = ((character.direction == "left")? -225 : -525) + "px 0";
       character.target.style.bottom = character.jumpPotential + "%";
       character.jumping = true;
 
       setTimeout(function() {
-        character.target.style.backgroundPosition = "0 0";
+        character.target.style.backgroundPosition = ((character.direction == "left")? 0 : -300) + "px 0";
         character.target.style.bottom = "0%";
         setTimeout(function(){
           character.jumping = false;
