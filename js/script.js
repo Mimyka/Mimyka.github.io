@@ -54,9 +54,9 @@ var sections = {
 };
 
 var character = {
-  pos: 50,
+  pos: 50.0,
   direction: "left",
-  speed: 0.5,
+  speed: 0.7,
   moving: false,
   jumping: false,
   jumpPotential: 25,
@@ -194,7 +194,7 @@ character.setTransition();
 
 // Functions
 
-function keyManager(k, b = true) {
+function keyManager(k, b) {
   switch (k) {
       case "ArrowLeft":
       case "KeyQ":
@@ -238,7 +238,7 @@ for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
 
 window.onkeydown = function(e) {
     e.key = e.key || e.code;
-    keyManager(e.key);
+    keyManager(e.key, true);
 };
 
 window.onkeyup = function(e) {
