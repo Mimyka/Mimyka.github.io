@@ -8,7 +8,7 @@ var sections = {
   actual: 0,
   right: -1,
   left: 1,
-  timeout: [],
+  forceMoving: false,
   actualise: function() {
     character.sectionTransition();
     document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
@@ -33,25 +33,24 @@ var sections = {
     else if(d === this.left){
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
+    if (sections.forceMoving) {
+      setTimeout(function(){
+        keyboard.right = false;
+        keyboard.left = false;
+      },500);
+    }
     sections.actualise();
   },
-  forceMove: function(d) {
-    sections.clearAllEvent();
-    for (var i = 1; i <= (100/character.speed); i++) {
-      sections.timeout.push(setTimeout(function() {
-        if (d < 0) {
-          character.move.right();
-        }else{
-          character.move.left();
-        }
-      }, (1000/60)*i));
-    }
+  forceMove: {
+    right: function(){
+      sections.forceMoving = true;
+      keyboard.right = true;
+    },
+    left: function(){
+      sections.forceMoving = true;
+      keyboard.left = true;
+    },
   },
-  clearAllEvent: function() {
-    for (var i = 0; i < sections.timeout.length; i++) {
-      window.clearTimeout(sections.timeout[i]);
-    }
-  }
 };
 
 var character = {
@@ -228,10 +227,10 @@ function keyManager(k, b = true) {
 
 for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
   document.getElementsByClassName('doorL')[i].onclick = function() {
-    sections.forceMove(90);
+    sections.forceMove.left();
   }
   document.getElementsByClassName('doorR')[i].onclick = function() {
-    sections.forceMove(-90);
+    sections.forceMove.right();
   }
 }
 
