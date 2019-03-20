@@ -63,7 +63,7 @@ var character = {
   target: document.getElementsByClassName("character")[0],
   inMoveFrame: false,
   setTransition: function(){
-    character.target.style.transition = ".1s left linear, .1s bottom linear";
+    character.target.style.transition = "0.15s left linear, 0.15s bottom linear";
   },
   sectionTransition: function(){
     character.target.style.transition = "";
@@ -74,11 +74,11 @@ var character = {
       character.target.style.backgroundPosition = "-75px 0";
       setTimeout(function() {
         character.target.style.backgroundPosition = "-150px 0";
-      }, 100);
+      }, 150);
       setTimeout(function() {
         character.target.style.backgroundPosition = "0 0";
         character.inMoveFrame = false;
-      }, 200);
+      }, 250);
     }
   },
   paint: function(){
@@ -124,7 +124,7 @@ var character = {
         character.target.style.bottom = "0%";
         setTimeout(function(){
           character.jumping = false;
-        },125);
+        },200);
       }, 150);
     }
   }
@@ -163,7 +163,7 @@ function Slime(target, pos) {
   };
 
   _.init = function(){
-    _.target.style.transition = ".15s left linear, .15s bottom linear";
+    _.target.style.transition = "0.15s left linear, 0.15s bottom linear";
     _.target.style.height  = (32+16*Math.random())+"px";
     _.target.onclick = function() {
       _.target.style.filter = "hue-rotate("+Math.random()*360+"deg)"
