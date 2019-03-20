@@ -35,13 +35,16 @@ var sections = {
     }
     sections.actualise();
   },
-  forceMove: function(d, w) {
-    w = (d < 0)? character.speed : -character.speed;
+  forceMove: function(d) {
     sections.clearAllEvent();
     for (var i = 1; i <= (100/character.speed); i++) {
       sections.timeout.push(setTimeout(function() {
-        character.move(w);
-      }, i*cfg.keyDelay));
+        if (d < 0) {
+          character.move.right();
+        }else{
+          character.move.left();
+        }
+      }, (1000/60)*i));
     }
   },
   clearAllEvent: function() {
@@ -51,21 +54,17 @@ var sections = {
   }
 };
 
-var cfg = {
-  keyDelay: 100
-};
-
 var character = {
   pos: 50,
   direction: "left",
-  speed: 4,
+  speed: 0.5,
   moving: false,
   jumping: false,
   jumpPotential: 25,
   target: document.getElementsByClassName("character")[0],
   inMoveFrame: false,
   setTransition: function(){
-    character.target.style.transition = (cfg.keyDelay/1000) + "s left linear, " + (cfg.keyDelay/1000) + "s bottom linear";
+    character.target.style.transition = ".1s left linear, .1s bottom linear";
   },
   sectionTransition: function(){
     character.target.style.transition = "";
@@ -76,26 +75,37 @@ var character = {
       character.target.style.backgroundPosition = "-75px 0";
       setTimeout(function() {
         character.target.style.backgroundPosition = "-150px 0";
-      }, (cfg.keyDelay));
+      }, 100);
       setTimeout(function() {
         character.target.style.backgroundPosition = "0 0";
         character.inMoveFrame = false;
-      }, (cfg.keyDelay*2));
+      }, 200);
     }
   },
   paint: function(){
     if (character.moving) {
-      character.target.style.transform = (character.direction == "right")? "translateX(-50%)" : "translateX(-50%) rotateY(180deg)";
+      character.target.style.transform = (character.direction == "left")? "translateX(-50%)" : "translateX(-50%) rotateY(180deg)";
       character.target.style.left = character.pos + "%";
       character.moveFrame();
 
       character.moving = false;
     }
   },
-  move: function(speed) {
-    character.moving = true;
-    character.direction = (speed < 0)? "right" : "left";
-    character.pos += speed;
+  move : {
+    right: function(){
+      character.moving = true;
+      character.direction = "right";
+      character.pos += character.speed;
+      character.checkPosition();
+    },
+    left: function(){
+      character.moving = true;
+      character.direction = "left";
+      character.pos += -character.speed;
+      character.checkPosition();
+    },
+  },
+  checkPosition: function(){
     if(character.pos >= 100){
       sections.move(sections.right);
       character.pos = character.speed;
@@ -115,24 +125,9 @@ var character = {
         character.target.style.bottom = "0%";
         setTimeout(function(){
           character.jumping = false;
-        },100);
+        },125);
       }, 150);
     }
-  },
-  grow: function() {
-    character.target.style.height = "150px";
-    character.speed = 2;
-    character.jumpPotential = 5;
-  },
-  shrink: function() {
-    character.target.style.height = "50px";
-    character.speed = 6;
-    character.jumpPotential = 55;
-  },
-  normal: function() {
-    character.target.style.height = "100px";
-    character.speed = 4;
-    character.jumpPotential = 25;
   }
 };
 
@@ -165,7 +160,7 @@ function Slime(target, pos) {
     _.target.style.bottom = _.jumpPotential + "%";
     setTimeout(function() {
       _.target.style.bottom = "0%";
-    }, (cfg.keyDelay/2));
+    }, 100);
   };
 
   _.init = function(){
@@ -183,24 +178,50 @@ function Slime(target, pos) {
 
     setTimeout(_.ai,750+(Math.random()*500));
   };
-}
+};
+
+var keyboard = {
+  up : false,
+  left: false,
+  right: false,
+};
+
+// Init
 
 var slime = new Slime(document.getElementsByClassName("slime")[0]);
 slime.init();
 
 character.setTransition();
 
-// FUNCTIONS
+// Functions
 
-function throttle(callback, delay) {
-    var last;
-    return function () {
-        var now = Date.now();
-        if (now >= last + delay || !last) {
-          last = now;
-          callback.apply(this, arguments);
-        }
-    };
+function keyManager(k, b = true) {
+  switch (k) {
+      case "ArrowLeft":
+      case "KeyQ":
+      case "KeyH":
+      case "q":
+      case "h":
+        keyboard.left = b;
+      break;
+      case "ArrowRight":
+      case "KeyD":
+      case "KeyL":
+      case "d":
+      case "l":
+        keyboard.right = b;
+      break;
+      case "ArrowUp":
+      case "KeyZ":
+      case "Spacebar":
+      case "KeyK":
+      case "z":
+      case " ":
+      case "k":
+        keyboard.up = b;
+      break;
+      default:
+  }
 }
 
 // Event
@@ -216,49 +237,31 @@ for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
 
 // Mapping
 
-window.onkeydown = throttle(function(e) {
+window.onkeydown = function(e) {
     e.key = e.key || e.code;
-    switch (e.key) {
-        case "ArrowLeft":
-        case "KeyQ":
-        case "KeyH":
-        case "q":
-        case "h":
-          character.move(-character.speed);
-        break;
-        case "ArrowRight":
-        case "KeyD":
-        case "KeyL":
-        case "d":
-        case "l":
-          character.move(character.speed);
-        break;
-        case "ArrowUp":
-        case "KeyZ":
-        case "Spacebar":
-        case "KeyK":
-        case "z":
-        case " ":
-        case "k":
-          character.jump();
-        break;
-        case "+":
-        case "NumpadAdd":
-          character.grow();
-        break;
-        case "-":
-        case "NumpadSubtract":
-          character.shrink();
-        break;
-        case "=":
-        case "Equal":
-          character.normal();
-        break;
-        default:
-    }
-},cfg.keyDelay);
+    keyManager(e.key);
+};
+
+window.onkeyup = function(e) {
+    e.key = e.key || e.code;
+    keyManager(e.key, false);
+};
+
+// Gameloop
 
 function gameloop(){
+  if (keyboard.left) {
+    character.move.left();
+  }
+
+  if (keyboard.up) {
+    character.jump();
+  }
+
+  if (keyboard.right) {
+    character.move.right();
+  }
+
   character.paint();
   slime.paint();
 
