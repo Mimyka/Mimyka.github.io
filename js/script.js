@@ -59,16 +59,16 @@ var sections = {
 };
 
 var character = {
-  pos: 50.0,
+  target: document.getElementsByClassName("character")[0],
+  pos: {x: 50, y: 0},
+  speed: {x: 0.7, y: 25},
   direction: "left",
-  speed: 0.7,
   moving: false,
   jumping: false,
-  jumpPotential: 25,
-  target: document.getElementsByClassName("character")[0],
   inMoveFrame: false,
+  inJumpFrame: false,
   setTransition: function(){
-    character.target.style.transition = "0.15s left linear, 0.15s bottom linear";
+    character.target.style.transition = (isMobileDevice)? "0.15s left linear" : "0.15s bottom linear";
   },
   sectionTransition: function(){
     character.target.style.transition = "";
@@ -86,50 +86,66 @@ var character = {
       }, 250);
     }
   },
+  jumpFrame: function(){
+    if (!character.inJumpFrame) {
+      character.inJumpFrame = true;
+      character.target.style.backgroundPosition = ((character.direction == "left")? -225 : -525) + "px 0";
+      setTimeout(function(){
+        character.target.style.backgroundPosition = ((character.direction == "left")? 0 : -300) + "px 0";
+      }, 150);
+      setTimeout(function(){
+        character.inJumpFrame = false;
+      },350);
+    }
+  },
   paint: function(){
     if (character.moving) {
-      character.target.style.left = character.pos + "%";
-      character.moveFrame();
-
+      character.target.style.left = character.pos.x + "%";
+      if (!character.jumping) {
+        character.moveFrame();
+      }
       character.moving = false;
+    }
+
+    if (character.jumping) {
+      character.target.style.bottom = character.pos.y + "%";
+      character.jumpFrame();
     }
   },
   move : {
     right: function(){
       character.moving = true;
       character.direction = "right";
-      character.pos += character.speed;
+      character.pos.x += character.speed.x;
       character.checkPosition();
     },
     left: function(){
       character.moving = true;
       character.direction = "left";
-      character.pos += -character.speed;
+      character.pos.x -= character.speed.x;
       character.checkPosition();
+    },
+    up: function(){
+      if (!character.jumping) {
+        character.jumping = true;
+        character.pos.y += character.speed.y;
+
+        setTimeout(function(){
+          character.pos.y -= character.speed.y;
+        },150);
+        setTimeout(function(){
+          character.jumping = false;
+        },350);
+      }
     }
   },
   checkPosition: function(){
-    if(character.pos >= 100){
+    if(character.pos.x >= 100){
       sections.move(sections.right);
-      character.pos = character.speed;
-    }else if(character.pos <= 0){
+      character.pos.x = character.speed.x;
+    }else if(character.pos.x <= 0){
       sections.move(sections.left);
-      character.pos = 100-character.speed;
-    }
-  },
-  jump: function() {
-    if (!character.jumping) {
-      character.target.style.backgroundPosition = ((character.direction == "left")? -225 : -525) + "px 0";
-      character.target.style.bottom = character.jumpPotential + "%";
-      character.jumping = true;
-
-      setTimeout(function() {
-        character.target.style.backgroundPosition = ((character.direction == "left")? 0 : -300) + "px 0";
-        character.target.style.bottom = "0%";
-        setTimeout(function(){
-          character.jumping = false;
-        },200);
-      }, 150);
+      character.pos.x = 100-character.speed.x;
     }
   }
 };
@@ -196,13 +212,13 @@ var keyboard = {
 
 // Init
 
-if (!isMobileDevice) {
-  window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(callback){setTimeout(callback, 16);};
-}else{
+if (isMobileDevice) {
   window.requestAnimationFrame = function(callback){
     setTimeout(callback, 150);
   };
   character.speed = 5;
+}else{
+  window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(callback){setTimeout(callback, 17);};
 }
 
 var slime = new Slime(document.getElementsByClassName("slime")[0]);
@@ -215,7 +231,7 @@ character.setTransition();
 function keyManager(k, b) {
   switch (k) {
       case "ArrowLeft":
-      case "KeyQ":
+      case "KeyA":
       case "KeyH":
       case "q":
       case "h":
@@ -229,7 +245,7 @@ function keyManager(k, b) {
         keyboard.right = b;
       break;
       case "ArrowUp":
-      case "KeyZ":
+      case "KeyW":
       case "Spacebar":
       case "KeyK":
       case "z":
@@ -277,7 +293,7 @@ function gameloop(){
   }
 
   if (keyboard.up) {
-    character.jump();
+    character.move.up();
   }
 
   if (keyboard.right) {
