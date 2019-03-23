@@ -216,7 +216,7 @@ if (isMobileDevice) {
   window.requestAnimationFrame = function(callback){
     setTimeout(callback, 150);
   };
-  character.speed = 5;
+  character.speed.x = 5;
 }else{
   window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(callback){setTimeout(callback, 17);};
 }
