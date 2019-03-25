@@ -11,8 +11,8 @@ var isMobileDevice = (function() {
 var sections = {
   nodeList: document.getElementsByClassName('section'),
   actual: 0,
-  right: -1,
-  left: 1,
+  right: 'right',
+  left: 'left',
   forceMoving: false,
   actualise: function() {
     character.sectionTransition();
@@ -32,10 +32,10 @@ var sections = {
     setTimeout(character.setTransition, 16);
   },
   move: function(d) {
-    if(d === this.right){
+    if(d === sections.right){
       sections.actual = (sections.actual >= sections.nodeList.length-1)? 0 : sections.actual+1;
     }
-    else if(d === this.left){
+    else if(d === sections.left){
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
     if (sections.forceMoving) {
@@ -67,8 +67,9 @@ var character = {
   jumping: false,
   inMoveFrame: false,
   inJumpFrame: false,
+  jumpDelay: 250,
   setTransition: function(){
-    character.target.style.transition = (isMobileDevice)? "0.15s left linear" : "0.15s bottom linear";
+    character.target.style.transition = (isMobileDevice)? "0.16s left linear" : "0.16s bottom ease-in";
   },
   sectionTransition: function(){
     character.target.style.transition = "";
@@ -92,10 +93,10 @@ var character = {
       character.target.style.backgroundPosition = ((character.direction == "left")? -225 : -525) + "px 0";
       setTimeout(function(){
         character.target.style.backgroundPosition = ((character.direction == "left")? 0 : -300) + "px 0";
+        setTimeout(function(){
+          character.inJumpFrame = false;
+        },character.jumpDelay);
       }, 150);
-      setTimeout(function(){
-        character.inJumpFrame = false;
-      },350);
     }
   },
   paint: function(){
@@ -129,13 +130,12 @@ var character = {
       if (!character.jumping) {
         character.jumping = true;
         character.pos.y += character.speed.y;
-
         setTimeout(function(){
           character.pos.y -= character.speed.y;
+          setTimeout(function(){
+            character.jumping = false;
+          },character.jumpDelay);
         },150);
-        setTimeout(function(){
-          character.jumping = false;
-        },350);
       }
     }
   },
@@ -214,7 +214,7 @@ var keyboard = {
 
 if (isMobileDevice) {
   window.requestAnimationFrame = function(callback){
-    setTimeout(callback, 150);
+    setTimeout(callback, 160);
   };
   character.speed.x = 5;
 }else{
