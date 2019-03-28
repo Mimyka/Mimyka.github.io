@@ -1,14 +1,14 @@
 # This is my portfolio !
 
-I'm still working on it, i took considerable time to make few pixel art (and it's not reallt that we can call perfect). The background (with trees) was not made by me, will add the copyright soon.
+I'm still working on it, i took considerable time to make few pixel art (and it's not really that we can call perfect). The background was not made by me, will add the copyright soon.
 
-You can find it at [https://mimyka.github.io/](https://mimyka.github.io/) or simply with this command line
+You can find it at [https://mimyka.github.io/](https://mimyka.github.io/) or simply download it with this command line
 
     git clone https://github.com/Mimyka/Mimyka.github.io.git
 
 # In progress
 
-Most of things are in progress, but the most important are :
+Most of things are in progress, here are few of them :
 
  - Design better UI for mobile devices (ugly scroll)
  - Put more elements in the "game" nav
