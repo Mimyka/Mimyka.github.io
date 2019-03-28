@@ -133,6 +133,12 @@ blockquote
   height: 200px;
   background-color: #CCC;
   padding: 10px;
+  background: url(../img/background.png);
+  background-size: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
 }
 
 .doorL, .doorR ,.character, .slime{
