@@ -63,13 +63,14 @@ var character = {
   pos: {x: 50, y: 0},
   speed: {x: 0.7, y: 25},
   direction: "left",
+  tmp: {},
   moving: false,
   jumping: false,
   inMoveFrame: false,
   inJumpFrame: false,
   jumpDelay: 250,
   setTransition: function(){
-    character.target.style.transition = (isMobileDevice)? "0.16s left linear" : "0.16s bottom ease-in";
+    character.target.style.transition = (isMobileDevice)? "0.16s left linear" : "0.08s left linear, 0.15s bottom ease-in";
   },
   sectionTransition: function(){
     character.target.style.transition = "";
@@ -77,22 +78,36 @@ var character = {
   moveFrame: function(){
     if (!character.inMoveFrame) {
       character.inMoveFrame = true;
-      character.target.style.backgroundPosition = ((character.direction == "left")? -75 : -375) + "px 0";
+
       setTimeout(function() {
-        character.target.style.backgroundPosition = ((character.direction == "left")? -150 : -450) + "px 0";
-      }, 150);
+        character.target.classList.add('walk-1');
+        setTimeout(function() {
+          if (character.target.classList.contains('walk-1')) {
+            character.target.classList.remove('walk-1');
+          }
+          character.target.classList.add('walk-2');
+        }, 100);
+      }, 100);
+
       setTimeout(function() {
-        character.target.style.backgroundPosition = ((character.direction == "left")? 0 : -300) + "px 0";
+        if (character.target.classList.contains('walk-1')) {
+          character.target.classList.remove('walk-1');
+        }
+        if (character.target.classList.contains('walk-2')) {
+          character.target.classList.remove('walk-2');
+        }
         character.inMoveFrame = false;
-      }, 250);
+      }, 300);
     }
   },
   jumpFrame: function(){
     if (!character.inJumpFrame) {
       character.inJumpFrame = true;
-      character.target.style.backgroundPosition = ((character.direction == "left")? -225 : -525) + "px 0";
+      character.target.classList.add('jump');
       setTimeout(function(){
-        character.target.style.backgroundPosition = ((character.direction == "left")? 0 : -300) + "px 0";
+        if (character.target.classList.contains('jump')) {
+          character.target.classList.remove('jump');
+        }
         setTimeout(function(){
           character.inJumpFrame = false;
         },character.jumpDelay);
@@ -113,16 +128,29 @@ var character = {
       character.jumpFrame();
     }
   },
+  orientation : function(d){
+    if (d !== "left" && d !== "right") {
+      return;
+    }
+    if (character.direction !== d) {
+      character.direction = d;
+      character.tmp.inverseDirection = (d == "left")? "right" : "left";
+      if (character.target.classList.contains('direction--'+character.tmp.inverseDirection)) {
+        character.target.classList.remove('direction--'+character.tmp.inverseDirection);
+      }
+      character.target.classList.add('direction--'+character.direction);
+    }
+  },
   move : {
     right: function(){
       character.moving = true;
-      character.direction = "right";
+      character.orientation("right");
       character.pos.x += character.speed.x;
       character.checkPosition();
     },
     left: function(){
       character.moving = true;
-      character.direction = "left";
+      character.orientation("left");
       character.pos.x -= character.speed.x;
       character.checkPosition();
     },
@@ -137,6 +165,14 @@ var character = {
           },character.jumpDelay);
         },150);
       }
+    },
+    down: function(){
+      if (!character.jumping) { // in waiting of draw
+        character.jumping = true;
+        setTimeout(function(){
+          character.jumping = false;
+        },character.jumpDelay);
+      }
     }
   },
   checkPosition: function(){
@@ -150,62 +186,15 @@ var character = {
   }
 };
 
-function Slime(target, pos) {
-  var _ = this; // scope
-  _.pos = pos || 10+Math.random()*80;
-  _.speed = 10;
-  _.moving = false;
-  _.jumpPotential = 50;
-  _.target = target;
-
-  _.paint = function(){
-    if (_.moving) {
-      _.target.style.left = _.pos + "%";
-      _.moving = false;
-    }
-  };
-
-  _.move = function(speed) {
-    _.moving = true;
-    _.pos += speed;
-    if(_.pos >= 100){
-      _.pos = 100;
-    }else if(_.pos <= 0){
-      _.pos = 0;
-    }
-  };
-
-  _.jump = function() {
-    _.target.style.bottom = _.jumpPotential + "%";
-    setTimeout(function() {
-      _.target.style.bottom = "0%";
-    }, 100);
-  };
-
-  _.init = function(){
-    _.target.style.transition = "0.15s left linear, 0.15s bottom linear";
-    _.target.style.height  = (32+16*Math.random())+"px";
-    _.target.onclick = function() {
-      _.target.style.filter = "hue-rotate("+Math.random()*360+"deg)";
-    };
-    _.ai();
-  };
-
-  _.ai = function(){
-    _.move(_.speed * (Math.random()-Math.random()));
-    _.jump();
-
-    setTimeout(_.ai,750+(Math.random()*500));
-  };
-}
-
 var keyboard = {
   up : false,
   left: false,
+  down: false,
   right: false,
   reset: function(){
     keyboard.up = false;
     keyboard.left = false;
+    keyboard.down = false;
     keyboard.right = false;
   }
 };
@@ -220,9 +209,6 @@ if (isMobileDevice) {
 }else{
   window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(callback){setTimeout(callback, 17);};
 }
-
-var slime = new Slime(document.getElementsByClassName("slime")[0]);
-slime.init();
 
 character.setTransition();
 
@@ -252,6 +238,13 @@ function keyManager(k, b) {
       case " ":
       case "k":
         keyboard.up = b;
+      break;
+      case "ArrowDown":
+      case "KeyS":
+      case "KeyJ":
+      case "s":
+      case "j":
+        keyboard.down = b;
       break;
       default:
   }
@@ -300,8 +293,11 @@ function gameloop(){
     character.move.right();
   }
 
+  if (keyboard.down) {
+    character.move.down();
+  }
+
   character.paint();
-  slime.paint();
 
   requestAnimationFrame(gameloop);
 }
