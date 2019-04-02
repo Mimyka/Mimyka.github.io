@@ -176,12 +176,12 @@ var character = {
     }
   },
   checkPosition: function(){
-    if(character.pos.x >= 100){
+    if(character.pos.x > 97.5){
       sections.move(sections.right);
-      character.pos.x = character.speed.x;
-    }else if(character.pos.x <= 0){
+      character.pos.x = 2.5;
+    }else if(character.pos.x < 2.5){
       sections.move(sections.left);
-      character.pos.x = 100-character.speed.x;
+      character.pos.x = 97.5;
     }
   }
 };

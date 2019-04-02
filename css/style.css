@@ -133,8 +133,8 @@ blockquote
   height: 200px;
   background-color: #CCC;
   padding: 10px;
-  background: url(../img/background.png);
-  background-size: contain;
+  background: url(../img/background.png) 0 0 repeat-x;
+  background-size: auto 200px;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -195,32 +195,15 @@ blockquote
 .doorL, .doorR{
   height: 120px;
   cursor: pointer;
-  animation-name: door;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-out;
 }
 
 .doorL{
-  left: 0;
+  left: 5px;
+  transform: rotateY(180deg);
 }
 
 .doorR{
-  transform: translateX(-100%);
-  left: 100%;
-}
-
-/*keyframes*/
-
-@keyframes door {
-  0%{
-    box-shadow: none;
-    filter: none;
-  }
-  50%{
-    box-shadow: inset 0 0 100px rgb(20,110,255);
-    filter: brightness(1.3);
-  }
+  right: 5px;
 }
 
 /*
@@ -244,10 +227,8 @@ blockquote
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url(../img/ground.png);
+  background: url(../img/ground.png) 0 0 repeat-x;
   background-size: 120px;
-  background-position: top left;
-  background-repeat: repeat-x;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
