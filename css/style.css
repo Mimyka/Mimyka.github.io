@@ -72,23 +72,31 @@ blockquote
  #     # ######  ####   ####  #    # #####  ###### ######
 */
 
-#main{
+.main{
   height: 100%;
   width: 100%;
   position: relative;
-  transform-style: preserve-3d;
 }
 
 .section{
-  height: 100%;
+  height: calc(100% - 200px);
   right: 0;
   left: 100%;
   position: absolute;
   overflow: hidden;
+  overflow-y: auto;
 }
 
-#main .active{
+.section.active{
   left: 0;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .line{
@@ -97,16 +105,6 @@ blockquote
   margin: 10px auto;
   height: 20px;
   background-color: #888;
-}
-
-.wrapper{
-  height: calc(100% - 200px);
-  padding: 20px;
-  overflow-y: scroll;
-}
-
-#home .wrapper{
-  overflow: hidden;
 }
 
 .item{
@@ -216,39 +214,40 @@ blockquote
  #     #  ####  #    # ######
 */
 
-#home .wrapper{
-  padding: 0;
+#home {
+  max-width: 100%;
 }
 
-#home .wrapper header{
+#home header{
   height: 180px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background: url(../img/ground.png) 0 0 repeat-x;
   background-size: 120px;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
-}
-
-#home .wrapper .headings{
-  border: 1px solid;
-  border-radius: 3px;
-  background-color: #eee;
-  padding: 15px 7px 7px 7px;
   position: relative;
 }
 
-#home .wrapper .headings:before, #home .wrapper .headings:after{
+#home .headings{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 25px;
+  width: 280px;
+  border: 1px solid;
+  border-radius: 3px;
+  background-color: #eee;
+  text-align: center;
+  padding: 12px 0 7px 0;
+}
+
+#home .headings:before, #home .headings:after{
   content: "";
   display: block;
   border-style: solid;
   position: absolute;
-  left: 45%;
   width: 0;
   height: 0;
   left: 50%;
@@ -258,32 +257,32 @@ blockquote
   border-color: transparent transparent #eee transparent;
 }
 
-#home .wrapper .headings:before{
+#home .headings:before{
   top: -12px;
   border-width: 0 12px 12px 12px;
   border-color: transparent transparent #222 transparent;
 }
 
 
-#home .wrapper header h1{
+#home header h1{
   text-align: center;
   line-height: 30px;
 }
 
-#home .wrapper header h2{
+#home header h2{
   text-align: center;
   font-size: 25px;
   color: #393939;
 }
 
-#home .wrapper .content{
+#home .content{
   height: calc(100% - 180px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#home .wrapper .content h2{
+#home .content h2{
   text-align: center;
 }
 
@@ -296,7 +295,7 @@ blockquote
  #     # #    # #    # #    #   #
  #     # #####   ####   ####    #
 */
-#about .wrapper .item{
+#about .item{
   margin-bottom: 20px;
   margin-top: 0;
 }
@@ -305,7 +304,7 @@ blockquote
   width: 100%;
 }
 
-#about .wrapper img{
+#about img{
   width: auto;
 }
 
@@ -327,7 +326,7 @@ blockquote
  #       #    #  ####   ####  ######  ####    #
 */
 
-#project .wrapper h2{
+#project h2{
   margin-top: 10px;
   text-align: center;
 }
@@ -398,6 +397,27 @@ blockquote
   h3{
     font-size: 23px;
   }
+
+  #about{
+    display: flex;
+    flex-direction: column;
+  }
+
+  #about .item-wrapper{
+    order: -2;
+  }
+
+  #about h2{
+    line-height: 46px;
+  }
+
+  #about .line{
+    display: none;
+  }
+
+  #about .item{
+    width: 50%;
+  }
 }
 
 @media (min-width: 768px){
@@ -417,9 +437,27 @@ blockquote
   h3{
     font-size: 28px;
   }
+
+  .container {
+    width: 750px;
+  }
+
+  #about{
+    display: block;
+  }
+
+  #about .item{
+    width: 35%;
+  }
+
+  #about h2{
+    float: right;
+    width: 65%;
+    text-align: right;
+  }
 }
 
-@media (min-width: 968px){
+@media (min-width: 992px){
   p{
     font-size: 20px;
     line-height:40px;
@@ -436,57 +474,12 @@ blockquote
   h3{
     font-size: 31px;
   }
-}
 
-@media (min-width: 560px) {
-  #about .wrapper{
-    display: flex;
-    flex-direction: column;
+  .container {
+    width: 970px;
   }
 
-  #about .wrapper .item-wrapper{
-    order: -2;
-  }
-
-  #about h2{
-    line-height: 46px;
-  }
-
-  #about .line{
-    display: none;
-  }
-
-  #about .wrapper .item{
-    width: 50%;
-  }
-
-  #about #mirror{
-    display: block;
-  }
-}
-
-@media (min-width: 768px) {
-  #about .wrapper{
-    display: block;
-  }
-
-  #about #mirror{
-    display: none;
-  }
-
-  #about .wrapper .item{
-    width: 35%;
-  }
-
-  #about h2{
-    float: right;
-    width: 65%;
-    text-align: right;
-  }
-}
-
-@media (min-width: 950px) {
-  #about .wrapper .item{
+  #about .item{
     width: 27.5%;
   }
 
@@ -495,8 +488,12 @@ blockquote
   }
 }
 
-@media (min-width: 1220px) {
-  #about .wrapper .item{
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+
+  #about .item{
     width: 22.5%;
   }
 
@@ -506,19 +503,19 @@ blockquote
 }
 
 @media (min-width: 630px) {
-  #project .wrapper .item{
+  #project .item{
     width: 50%;
   }
 }
 
 @media (min-width: 950px) {
-  #project .wrapper .item{
+  #project .item{
     width: 33%;
   }
 }
 
 @media (min-width: 1220px) {
-  #project .wrapper .item{
+  #project .item{
     width: 25%;
   }
 }

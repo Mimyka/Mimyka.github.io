@@ -16,7 +16,6 @@ var sections = {
   forceMoving: false,
   actualise: function() {
     character.sectionTransition();
-    document.getElementsByClassName('app')[sections.actual].appendChild(character.target);
 
     for (var i = 0; i < sections.nodeList.length; i++) {
       if (sections.actual == i) {

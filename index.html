@@ -9,32 +9,28 @@
   </head>
   <body>
 
-    <div id="main">
+    <div class="app">
+      <img class="doorL" src="./img/door.gif" alt="Door">
+      <img class="doorR" src="./img/door.gif" alt="Door">
+      <div class="character direction--left"></div>
+    </div>
+
+    <div class="main">
+
       <div id="home" class="section active">
-        <div class="app">
-          <img class="doorL" src="./img/door.gif" alt="Door" title="Contact">
-          <img class="doorR" src="./img/door.gif" alt="Door" title="About me">
-          <div class="character direction--left"></div>
-        </div>
-        <div class="wrapper">
-          <header>
-            <div class="headings">
-              <h1>Hi, i'm Jeremy</h1>
-              <h2>welcome to you</h2>
-            </div>
-          </header>
-          <div class="content">
-            <h2>You can use your keyboard or black holes to visit.</h2>
+        <header>
+          <div class="headings">
+            <h1>Hi, i'm Jeremy</h1>
+            <h2>welcome to you</h2>
           </div>
+        </header>
+        <div class="content">
+          <h2>You can use your keyboard or black holes to visit.</h2>
         </div>
       </div>
 
       <div id="about" class="section">
-        <div class="app">
-          <img class="doorL" src="./img/door.gif" alt="Door" title="Home">
-          <img class="doorR" src="./img/door.gif" alt="Door" title="Projects">
-        </div>
-        <div class="wrapper">
+        <div class="container">
           <h2>About me</h2>
           <span class="line"></span>
           <div class="item-wrapper">
@@ -47,11 +43,7 @@
       </div>
 
       <div id="project" class="section">
-        <div class="app">
-          <img class="doorL" src="./img/door.gif" alt="Door" title="About me">
-          <img class="doorR" src="./img/door.gif" alt="Door" title="Contact">
-        </div>
-        <div class="wrapper">
+        <div class="container">
           <h2>My Projects</h2>
           <div class="item">
             <a href="#"><img src="https://place-hold.it/300" alt=""></a>
@@ -69,11 +61,7 @@
       </div>
 
       <div id="contact" class="section">
-        <div class="app">
-          <img class="doorL" src="./img/door.gif" alt="Door" title="Projects">
-          <img class="doorR" src="./img/door.gif" alt="Door" title="Home">
-        </div>
-        <div class="wrapper">
+        <div class="container">
           <h2>Get in touch !</h2>
           <span class="line"></span>
           <a class="mail "href="mailto:leprunenec.jeremy@gmail.com">leprunenec.jeremy@gmail.com</a>
@@ -82,7 +70,8 @@
           </div>
         </div>
       </div>
-    </main>
+
+    </div>
 
     <!--[if IE]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.2.20171210/classList.min.js" charset="utf-8"></script>
