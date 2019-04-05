@@ -186,6 +186,8 @@ blockquote
 .doorL{
   left: 5px;
   transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .doorR{

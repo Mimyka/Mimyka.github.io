@@ -28,7 +28,7 @@ var sections = {
     }
 
     character.moving = true;
-    setTimeout(character.setTransition, 16);
+    setTimeout(character.setTransition, 32);
   },
   move: function(d) {
     if(d === sections.right){
@@ -301,4 +301,4 @@ function gameloop(){
   requestAnimationFrame(gameloop);
 }
 
-requestAnimationFrame(gameloop);
+gameloop();
