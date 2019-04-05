@@ -39,7 +39,7 @@ var sections = {
     }
     if (sections.forceMoving) {
       setTimeout(function(){
-        keyboard.reset();
+        control.reset();
         sections.forceMoving = false;
       },500);
     }
@@ -48,11 +48,11 @@ var sections = {
   forceMove: {
     right: function(){
       sections.forceMoving = true;
-      keyboard.right = true;
+      control.right = true;
     },
     left: function(){
       sections.forceMoving = true;
-      keyboard.left = true;
+      control.left = true;
     }
   }
 };
@@ -185,16 +185,16 @@ var character = {
   }
 };
 
-var keyboard = {
+var control = {
   up : false,
   left: false,
   down: false,
   right: false,
   reset: function(){
-    keyboard.up = false;
-    keyboard.left = false;
-    keyboard.down = false;
-    keyboard.right = false;
+    control.up = false;
+    control.left = false;
+    control.down = false;
+    control.right = false;
   }
 };
 
@@ -213,21 +213,21 @@ character.setTransition();
 
 // Functions
 
-function keyManager(k, b) {
+function keyboardManager(k, b) {
   switch (k) {
       case "ArrowLeft":
       case "KeyA":
       case "KeyH":
       case "q":
       case "h":
-        keyboard.left = b;
+        control.left = b;
       break;
       case "ArrowRight":
       case "KeyD":
       case "KeyL":
       case "d":
       case "l":
-        keyboard.right = b;
+        control.right = b;
       break;
       case "ArrowUp":
       case "KeyW":
@@ -236,14 +236,14 @@ function keyManager(k, b) {
       case "z":
       case " ":
       case "k":
-        keyboard.up = b;
+        control.up = b;
       break;
       case "ArrowDown":
       case "KeyS":
       case "KeyJ":
       case "s":
       case "j":
-        keyboard.down = b;
+        control.down = b;
       break;
       default:
   }
@@ -264,35 +264,35 @@ for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
 
 window.onkeydown = function(e) {
     e.key = e.key || e.code;
-    keyManager(e.key, true);
+    keyboardManager(e.key, true);
 };
 
 window.onkeyup = function(e) {
     e.key = e.key || e.code;
-    keyManager(e.key, false);
+    keyboardManager(e.key, false);
 };
 
 // Gameloop
 
 function gameloop(){
-  if (keyboard.left && keyboard.right) {
-    keyboard.reset();
+  if (control.left && control.right) {
+    control.reset();
     sections.forceMoving = false;
   }
 
-  if (keyboard.left) {
+  if (control.left) {
     character.move.left();
   }
 
-  if (keyboard.up) {
+  if (control.up) {
     character.move.up();
   }
 
-  if (keyboard.right) {
+  if (control.right) {
     character.move.right();
   }
 
-  if (keyboard.down) {
+  if (control.down) {
     character.move.down();
   }
 
