@@ -146,6 +146,15 @@ blockquote
   margin-left: -37px;
 }
 
+.character.transition{
+  transition: 0.15s bottom ease-in;
+}
+
+body.mobile .character.transition{
+  transition: 0.16s left linear;
+}
+
+
 .character.direction--left{
   background-position: 0 0;
 }

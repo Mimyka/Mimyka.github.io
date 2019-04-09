@@ -7,6 +7,10 @@ var isMobileDevice = (function() {
   return check;
 })();
 
+if (isMobileDevice) {
+  document.body.classList.add('mobile');
+}
+
 // VAR INIT
 var sections = {
   nodeList: document.getElementsByClassName('section'),
@@ -69,10 +73,12 @@ var character = {
   inJumpFrame: false,
   jumpDelay: 250,
   setTransition: function(){
-    character.target.style.transition = (isMobileDevice)? "0.16s left linear" : "0.08s left linear, 0.15s bottom ease-in";
+    character.target.classList.add('transition');
   },
   sectionTransition: function(){
-    character.target.style.transition = "";
+    if (character.target.classList.contains('transition')) {
+      character.target.classList.remove('transition');
+    }
   },
   moveFrame: function(){
     if (!character.inMoveFrame) {
