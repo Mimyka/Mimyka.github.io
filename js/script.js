@@ -12,6 +12,8 @@ if (isMobileDevice) {
 }
 
 // VAR INIT
+var app = document.getElementsByClassName('app')[0];
+
 var sections = {
   nodeList: document.getElementsByClassName('section'),
   actual: 0,
@@ -29,6 +31,10 @@ var sections = {
           sections.nodeList[i].classList.remove('active');
         }
       }
+    }
+
+    if (typeof window.scrollTo === 'function') {
+      window.scrollTo(0, 0);
     }
 
     character.moving = true;
@@ -62,7 +68,7 @@ var sections = {
 };
 
 var character = {
-  target: document.getElementsByClassName("character")[0],
+  node: document.getElementsByClassName("character")[0],
   pos: {x: 50, y: 0},
   speed: {x: 0.7, y: 25},
   direction: "left",
@@ -73,11 +79,11 @@ var character = {
   inJumpFrame: false,
   jumpDelay: 250,
   setTransition: function(){
-    character.target.classList.add('transition');
+    character.node.classList.add('transition');
   },
   sectionTransition: function(){
-    if (character.target.classList.contains('transition')) {
-      character.target.classList.remove('transition');
+    if (character.node.classList.contains('transition')) {
+      character.node.classList.remove('transition');
     }
   },
   moveFrame: function(){
@@ -85,21 +91,21 @@ var character = {
       character.inMoveFrame = true;
 
       setTimeout(function() {
-        character.target.classList.add('walk-1');
+        character.node.classList.add('walk-1');
         setTimeout(function() {
-          if (character.target.classList.contains('walk-1')) {
-            character.target.classList.remove('walk-1');
+          if (character.node.classList.contains('walk-1')) {
+            character.node.classList.remove('walk-1');
           }
-          character.target.classList.add('walk-2');
+          character.node.classList.add('walk-2');
         }, 100);
       }, 100);
 
       setTimeout(function() {
-        if (character.target.classList.contains('walk-1')) {
-          character.target.classList.remove('walk-1');
+        if (character.node.classList.contains('walk-1')) {
+          character.node.classList.remove('walk-1');
         }
-        if (character.target.classList.contains('walk-2')) {
-          character.target.classList.remove('walk-2');
+        if (character.node.classList.contains('walk-2')) {
+          character.node.classList.remove('walk-2');
         }
         character.inMoveFrame = false;
       }, 300);
@@ -108,10 +114,10 @@ var character = {
   jumpFrame: function(){
     if (!character.inJumpFrame) {
       character.inJumpFrame = true;
-      character.target.classList.add('jump');
+      character.node.classList.add('jump');
       setTimeout(function(){
-        if (character.target.classList.contains('jump')) {
-          character.target.classList.remove('jump');
+        if (character.node.classList.contains('jump')) {
+          character.node.classList.remove('jump');
         }
         setTimeout(function(){
           character.inJumpFrame = false;
@@ -121,7 +127,7 @@ var character = {
   },
   paint: function(){
     if (character.moving) {
-      character.target.style.left = character.pos.x + "%";
+      character.node.style.left = character.pos.x + "%";
       if (!character.jumping) {
         character.moveFrame();
       }
@@ -129,7 +135,7 @@ var character = {
     }
 
     if (character.jumping) {
-      character.target.style.bottom = character.pos.y + "%";
+      character.node.style.bottom = character.pos.y + "%";
       character.jumpFrame();
     }
   },
@@ -140,10 +146,10 @@ var character = {
     if (character.direction !== d) {
       character.direction = d;
       character.tmp.inverseDirection = (d == "left")? "right" : "left";
-      if (character.target.classList.contains('direction--'+character.tmp.inverseDirection)) {
-        character.target.classList.remove('direction--'+character.tmp.inverseDirection);
+      if (character.node.classList.contains('direction--'+character.tmp.inverseDirection)) {
+        character.node.classList.remove('direction--'+character.tmp.inverseDirection);
       }
-      character.target.classList.add('direction--'+character.direction);
+      character.node.classList.add('direction--'+character.direction);
     }
   },
   move : {
@@ -257,13 +263,21 @@ function keyboardManager(k, b) {
 
 // Event
 
-for (var i = 0; i < document.getElementsByClassName('doorL').length; i++) {
-  document.getElementsByClassName('doorL')[i].onclick = function() {
-    sections.forceMove.left();
-  };
-  document.getElementsByClassName('doorR')[i].onclick = function() {
-    sections.forceMove.right();
-  };
+document.getElementsByClassName('doorL')[0].onclick = function() {
+  sections.forceMove.left();
+};
+document.getElementsByClassName('doorR')[0].onclick = function() {
+  sections.forceMove.right();
+};
+
+window.onscroll = function(e){
+  if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+    app.classList.add('shrink');
+  } else {
+    if (app.classList.contains('shrink')) {
+      app.classList.remove('shrink');
+    }
+  }
 }
 
 // Mapping

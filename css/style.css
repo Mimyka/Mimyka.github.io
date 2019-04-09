@@ -7,11 +7,6 @@ html, body{
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden;
-}
-
-body{
-  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -60,23 +55,14 @@ blockquote
  #     # ######  ####   ####  #    # #####  ###### ######
 */
 
-.main{
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
-
 .section{
-  height: calc(100% - 200px);
-  right: 0;
-  left: 100%;
-  position: absolute;
-  overflow: hidden;
+  padding-top: 200px;
+  display: none;
   overflow-y: auto;
 }
 
 .section.active{
-  left: 0;
+  display: block;
 }
 
 .container {
@@ -115,16 +101,27 @@ blockquote
 /*App*/
 
 .app{
-  position: relative;
+  transition: all 0.2s ease;
+  position: fixed;
   height: 200px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
   background-color: #CCC;
-  padding: 10px;
   background: url(../img/background.png) 0 0 repeat-x;
   background-size: auto 200px;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
+}
+
+.app.shrink{
+  transition: all 0.5s ease;
+  height: 150px;
+  background-size: auto 150px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .doorL, .doorR ,.character{
@@ -381,7 +378,7 @@ body.mobile .character.transition{
 */
 
 @media (min-width: 560px){
-  #about{
+  #about .container{
     display: flex;
     flex-direction: column;
   }
@@ -425,7 +422,7 @@ body.mobile .character.transition{
     width: 750px;
   }
 
-  #about{
+  #about .container{
     display: block;
   }
 
