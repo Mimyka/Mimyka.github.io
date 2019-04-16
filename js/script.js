@@ -322,3 +322,36 @@ function gameloop(){
 }
 
 gameloop();
+
+// Miscellaneous
+
+var subtitle = document.getElementById('dynamic-subtitle');
+var subtitles = [
+  'a web developper',
+  'a mad scientist    !',
+  'sample text',
+  'todo: put a subtitle',
+];
+var last, actual;
+
+function changeSubtitle() {
+  do {
+    actual = Math.floor(Math.random()*subtitles.length);
+  } while (last === actual);
+  wrote(subtitle, subtitles[actual], changeSubtitle);
+  last = actual;
+}
+
+function wrote(target, text, callback, i){
+  i = i || 1;
+  if (i <= text.length) {
+   target.innerHTML = text.substring(0, i);
+    setTimeout(function() {
+      wrote(target, text, callback, i + 1)
+    }, 50+150*Math.random());
+  }else if (typeof callback === 'function') {
+    setTimeout(callback, 2500);
+  }
+}
+
+changeSubtitle();
