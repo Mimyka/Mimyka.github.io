@@ -10,13 +10,9 @@ You can find it at [https://mimyka.github.io/](https://mimyka.github.io/) or sim
 
 Most of things are in progress, here are few of them :
 
- - Design better UI for mobile devices (ugly scroll)
- - Put more elements in the "game" nav
  - Refresh my own picture and add some progress bars that never be usefull (progress bars didn't mean anything)
- - Retro-compatibility (IE & other ghost)
- - Find a subtitle
- - Replace left property by transform (dunno really if i could do that)
  - Optimize javascript
+ - Put content, it's really empty
 
 # Compatibility
 As i said, it's not achieve, but i perform some test and i'll be happy if you can wrote yours. (in case of problem)

@@ -326,19 +326,51 @@ gameloop();
 // Miscellaneous
 
 var subtitle = document.getElementById('dynamic-subtitle');
+var actualSubtitles;
 var subtitles = [
-  'a web developper',
-  'a mad scientist    !',
-  'sample text',
-  'todo: put a subtitle',
+  [
+    'a web developper',
+    'a mad scientist    !',
+    'nice to see you',
+    'good visit',
+  ],
+  [
+    'don\'t forget, character can move',
+    'i took an arrow in the knee',
+    'little sis, stops playing',
+    'todo: put a subtitle',
+  ]
 ];
+
 var last, actual;
 
-function changeSubtitle() {
-  do {
-    actual = Math.floor(Math.random()*subtitles.length);
-  } while (last === actual);
-  wrote(subtitle, subtitles[actual], changeSubtitle);
+function randomKeyFromIterable(a) {
+  return Math.floor(Math.random()*a.length);
+}
+
+function changeSubtitles(index){
+  if (typeof index !== 'number') {
+    index = randomKeyFromIterable(subtitles);
+  }
+  actualSubtitles = subtitles[index];
+  subtitles.splice(index, 1);
+  if (subtitles.length > 0) {
+    setTimeout(changeSubtitles, 120000);
+  }
+}
+
+function changeSubtitle(index) {
+  if (typeof actualSubtitles === 'undefined') {
+    changeSubtitles(0);
+  }
+  if (typeof index !== 'number') {
+    do {
+      actual = randomKeyFromIterable(actualSubtitles);
+    } while (last === actual);
+  }else{
+    actual = index;
+  }
+  wrote(subtitle, actualSubtitles[actual], changeSubtitle);
   last = actual;
 }
 
@@ -354,4 +386,4 @@ function wrote(target, text, callback, i){
   }
 }
 
-changeSubtitle();
+changeSubtitle(0);
