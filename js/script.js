@@ -1,5 +1,8 @@
 // Compatibility
 
+document.getElementsByClassName = document.getElementsByClassName || function(c){return document.querySelectorAll('.'+c)}
+window.addEventListener = window.addEventListener || function(e,c){window.attachEvent('on'+e,c)};
+
 // Taking from http://detectmobilebrowsers.com/
 var isMobileDevice = (function() {
   var check = false;

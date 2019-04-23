@@ -282,27 +282,6 @@ body.mobile .character.transition{
   }
 }
 
-.legend-square{
-  background-color: #337ab7;
-  float: left;
-  height: 10px;
-  width: 10px;
-}
-
-.legend .legend-line h5{
-  line-height: 1em;
-  text-indent: 5px;
-}
-
-.legend .legend-line{
-  clear: both;
-  margin: 5px 2px;
-}
-
-.skills{
-  margin-top: 20px;
-}
-
 #contact h2{
   margin-top: 30px;
   text-align: center;
@@ -706,38 +685,4 @@ body.mobile .character.transition{
 .thumbnail img {
   margin-right: auto;
   margin-left: auto;
-}
-
-.progress {
-  height: 15px;
-  margin-bottom: 20px;
-  overflow: hidden;
-  background-color: #f5f5f5;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-.progress-bar {
-  float: left;
-  width: 0%;
-  height: 100%;
-  font-size: 10px;
-  font-family: 'Raleway','Open Sans', Helvetica, Arial, sans-serif;
-  line-height: 15px;
-  color: #fff;
-  text-align: center;
-  background-color: #337ab7;
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  transition: width 0.6s ease;
-}
-.bg-success {
-  background-color: #5cb85c;
-}
-.bg-info {
-  background-color: #5bc0de;
-}
-.bg-warning {
-  background-color: #f0ad4e;
-}
-.bg-danger {
-  background-color: #d9534f;
 }

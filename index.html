@@ -43,91 +43,7 @@
               <h1>About me</h1>
               <hr>
               <p>I like real challenge. That's the biggest reason why i'm developer. In the fact, i started to code in my childhood, it was already an interest for me. And if you ask about my opinion in web development, i can tell you "Keep It Simple and Stupid".</p>
-              <h2>Skills</h2>
-              <hr>
-              <div class="row">
-                <div class="col-sm-7 col-md-6">
-                  <p>I've seen many website with skills bars. Evaluate skills, it's ok, but what's the scale? Then, here it is.</p>
-                  <div class="progress">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                    <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                  </div>
-
-                  <div class="legend">
-                    <div class="legend-line">
-                      <div class="legend-square bg-danger">
-                      </div>
-                      <h5>Basic knowledge</h5>
-                    </div>
-                    <div class="legend-line">
-                      <div class="legend-square bg-warning">
-                      </div>
-                      <h5>Limited experience</h5>
-                    </div>
-                    <div class="legend-line">
-                      <div class="legend-square bg-info">
-                      </div>
-                      <h5>Proficient</h5>
-                    </div>
-                    <div class="legend-line">
-                      <div class="legend-square">
-                      </div>
-                      <h5>Expert</h5>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-sm-5 col-md-6 skills">
-                  <h4>
-                    PHP
-                  </h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                  </div>
-                  <h4>
-                    Symfony 4
-                  </h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                  </div>
-                  <h4>
-                    Linux
-                  </h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                      BASH
-                    </div>
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                  </div>
-                  <h4>
-                    Javascript
-                  </h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                      NODE JS
-                    </div>
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                  </div>
-                  <h4>
-                    MySQL
-                  </h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                  </div>
-                </div>
-
-              </div>
+              <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto 25px auto"></div>
             </div>
 
           </div>
@@ -185,10 +101,85 @@
     <!--[if IE]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.2.20171210/classList.min.js" charset="utf-8"></script>
     <![endif]-->
+
     <script src="./js/script.js" charset="utf-8"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript">
+      var categoryName = {
+          '0': 'Basic<br>knowledge',
+          '25': 'Limited<br>experience',
+          '50': 'Proficient',
+          '75': 'Expert',
+      };
+      Highcharts.chart('container', {
+        credits: {
+          text: '',
+        },
+        plotOptions: {
+            series: {
+                color: '#1e88e5',
+                borderColor: '#bbb'
+            }
+        },
+        chart: {
+          type: 'column',
+          backgroundColor: '#ccc',
+          spacingBottom: 15,
+          spacingTop: 25,
+          spacingLeft: 25,
+          spacingRight: 25,
+          style: {
+            fontFamily: "'Raleway','Open Sans', Helvetica, Arial, sans-serif"
+          }
+        },
+        title: {
+          text: 'Skills',
+          y: 20,
+          style: {
+            fontSize: '36px'
+          }
+        },
+        tooltip: {
+            enabled: false
+        },
+        xAxis: {
+          categories: [
+            'PHP',
+            'Symfony 4',
+            'Linux',
+            'Javascript',
+            'MySQL'
+          ],
+          crosshair: true,
+          lineWidth: 0
+        },
+        yAxis: {
+          tickInterval: 25,
+          gridLineColor: '#bbb',
+          alternateGridColor: '#c8c8c8',
+          gridLineWidth: 2,
+          labels: {
+            formatter: function(){
+              return categoryName[this.value];
+            },
+            y: -32
+          },
+          title: {
+            text: ''
+          },
+          min: 0,
+          max: 100
+        },
+        series: [{
+          showInLegend: false,
+          data: [68, 45, 55, 66, 60]
+        }],
+      });
+    </script>
 
     <noscript id="deferred-styles">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/fontawesome.css" integrity="sha384-vd1e11sR28tEK9YANUtpIOdjGW14pS87bUBuOIoBILVWLFnS+MCX9T6MMf0VdPGq" crossorigin="anonymous">
     </noscript>
 
     <script>
