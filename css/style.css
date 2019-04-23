@@ -229,7 +229,6 @@ body.mobile .character.transition{
   border: 1px solid;
   border-radius: 3px;
   background-color: #eee;
-  text-align: center;
   padding: 12px 0 7px 0;
 }
 
@@ -252,10 +251,6 @@ body.mobile .character.transition{
   margin-left: -12px;
   border-width: 0 12px 12px 12px;
   border-color: transparent transparent #222 transparent;
-}
-
-#home h2, .dialog h1{
-  text-align: center;
 }
 
 .dialog h1{
@@ -284,11 +279,9 @@ body.mobile .character.transition{
 
 #contact h2{
   margin-top: 30px;
-  text-align: center;
 }
 
 #contact .mail{
-  text-align: center;
   margin: auto;
   display: block;
   font-family: 'Roboto', sans-serif;
@@ -302,7 +295,6 @@ body.mobile .character.transition{
   margin-top: 10px;
   padding-bottom: 25px;
   width: 100%;
-  text-align: center;
 }
 
 .icon-container a{
@@ -373,6 +365,10 @@ body.mobile .character.transition{
 }
 
 /*Bootstrap*/
+
+.text-center{
+  text-align: center;
+}
 
 .container, .container-fluid {
   padding-right: 15px;
@@ -685,4 +681,9 @@ body.mobile .character.transition{
 .thumbnail img {
   margin-right: auto;
   margin-left: auto;
+}
+
+.thumbnail .caption {
+  padding: 9px;
+  color: #333;
 }
