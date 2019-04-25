@@ -47,6 +47,17 @@ hr {
   height: 0;
 }
 
+#preloader {
+  position : fixed;
+  z-index: 9999999;
+  background : url('../img/preloader.gif') 50% 50% no-repeat;
+  background-color: #ddd;
+  top : 0;
+  left : 0;
+  right: 0;
+  bottom: 0;
+}
+
 /* Component */
 
 .section{

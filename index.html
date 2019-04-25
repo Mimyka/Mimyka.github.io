@@ -9,6 +9,8 @@
   </head>
   <body>
 
+    <div id="preloader"></div>
+
     <div class="app">
       <img class="doorL" src="./img/door.gif" alt="Door">
       <img class="doorR" src="./img/door.gif" alt="Door">
@@ -35,7 +37,7 @@
 
             <div class="col-sm-4 col-md-3 hidden-xs">
               <div class="thumbnail">
-                <img class="img-responsive" data-lazy="./img/profil.png" data-load="1" alt="Jérémy Le Prunenec">
+                <img class="img-responsive" data-lazy="./img/profil.png" data-load="1" src="./img/preloader.gif" alt="Jérémy Le Prunenec">
                 <div class="caption text-center">
                   <h4>Jérémy Le Prunenec</h4>
                 </div>
@@ -201,7 +203,7 @@
       var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
           window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
       if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
-      else window.addEventListener('load', loadDeferredStyles);
+      else onload(loadDeferredStyles);
     </script>
 
   </body>

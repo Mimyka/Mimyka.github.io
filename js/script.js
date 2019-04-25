@@ -1,7 +1,61 @@
 // Compatibility
 
 document.getElementsByClassName = document.getElementsByClassName || function(c){return document.querySelectorAll('.'+c)}
-window.addEventListener = window.addEventListener || function(e,c){window.attachEvent('on'+e,c)};
+var requestAnimationFramePolyfill = window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(callback){setTimeout(callback, 17);};
+
+function onload(callback) {
+  if (document.readyState != 'loading'){
+    callback();
+  } else if (typeof document.addEventListener === "function") {
+    document.addEventListener('DOMContentLoaded', callback);
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState != 'loading')
+        callback();
+    });
+  }
+}
+
+function fade(type, target, duration) {
+  duration = duration || 400;
+  if (typeof duration !== 'number') {
+    throw new Error("Third parameter type of fade() must be a number. '" + duration + "' received.");
+  }
+	if (type !== 'in' && type !== 'out') {
+    throw new Error("First parameter of fade() must be 'in' or 'out'. '" + type + "' received.");
+	}
+  var opacity = (type === 'in')? 0 : 1;
+  var goal = (type === 'in')? 1 : 0;
+
+  target.style.opacity = opacity;
+  target.style.filter = '';
+
+  var last = new Date();
+  function frame() {
+    if (type === 'in') {
+      opacity += (new Date() - last) / duration;
+    }else{
+      opacity -= (new Date() - last) / duration;
+    }
+
+    target.style.opacity = opacity;
+    target.style.filter = 'alpha(opacity=' + (100 * opacity)|0 + ')';
+
+    last = new Date();
+
+    if ((type === 'in' && opacity < goal) || (type === 'out' && opacity > goal)) {
+      requestAnimationFramePolyfill(frame);
+    }else{
+      if (type === 'out') {
+        target.style.display = 'none';
+      }else{
+        target.style.display = '';
+      }
+    }
+  };
+
+  frame();
+}
 
 // Thanks to https://github.com/Financial-Times/polyfill-library/tree/master/polyfills/Element/prototype/dataset
 
@@ -129,7 +183,7 @@ var sections = {
 };
 
 var character = {
-  node: document.getElementsByClassName("character")[0],
+  node: document.getElementsByClassName('character')[0],
   pos: {x: 50, y: 0},
   speed: {x: 0.7, y: 25},
   direction: "left",
@@ -274,12 +328,12 @@ var control = {
 // Init
 
 if (isMobileDevice) {
-  window.requestAnimationFrame = function(callback){
+  var requestFrame = function(callback){
     setTimeout(callback, 160);
   };
   character.speed.x = 5;
 }else{
-  window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(callback){setTimeout(callback, 17);};
+  var requestFrame = requestAnimationFramePolyfill;
 }
 
 character.setTransition();
@@ -379,7 +433,7 @@ function gameloop(){
 
   character.paint();
 
-  requestAnimationFrame(gameloop);
+  requestFrame(gameloop);
 }
 
 gameloop();
@@ -448,3 +502,9 @@ function wrote(target, text, callback, i){
 }
 
 changeSubtitle(0);
+
+// On load
+
+onload(function(){
+  fade('out',document.getElementById('preloader'));
+});
