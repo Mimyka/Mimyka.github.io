@@ -16,47 +16,6 @@ function onload(callback) {
   }
 }
 
-function fade(type, target, duration) {
-  duration = duration || 400;
-  if (typeof duration !== 'number') {
-    throw new Error("Third parameter type of fade() must be a number. '" + duration + "' received.");
-  }
-	if (type !== 'in' && type !== 'out') {
-    throw new Error("First parameter of fade() must be 'in' or 'out'. '" + type + "' received.");
-	}
-  var opacity = (type === 'in')? 0 : 1;
-  var goal = (type === 'in')? 1 : 0;
-
-  target.style.opacity = opacity;
-  target.style.filter = '';
-
-  var last = new Date();
-  function frame() {
-    if (type === 'in') {
-      opacity += (new Date() - last) / duration;
-    }else{
-      opacity -= (new Date() - last) / duration;
-    }
-
-    target.style.opacity = opacity;
-    target.style.filter = 'alpha(opacity=' + (100 * opacity)|0 + ')';
-
-    last = new Date();
-
-    if ((type === 'in' && opacity < goal) || (type === 'out' && opacity > goal)) {
-      requestAnimationFramePolyfill(frame);
-    }else{
-      if (type === 'out') {
-        target.style.display = 'none';
-      }else{
-        target.style.display = '';
-      }
-    }
-  };
-
-  frame();
-}
-
 // Thanks to https://github.com/Financial-Times/polyfill-library/tree/master/polyfills/Element/prototype/dataset
 
 var datasetSupport = (function(){
@@ -440,17 +399,61 @@ gameloop();
 
 // Miscellaneous
 
+function fade(type, target, duration) {
+  duration = duration || 400;
+  if (typeof duration !== 'number') {
+    throw new Error("Third parameter type of fade() must be a number. '" + duration + "' received.");
+  }
+	if (type !== 'in' && type !== 'out') {
+    throw new Error("First parameter of fade() must be 'in' or 'out'. '" + type + "' received.");
+	}
+  var opacity = (type === 'in')? 0 : 1;
+  var goal = (type === 'in')? 1 : 0;
+
+  if(type === 'in'){
+    target.style.display = '';
+  }
+
+  target.style.opacity = opacity;
+  target.style.filter = '';
+
+  var last = new Date();
+  var now = last;
+  function frame() {
+    now = new Date();
+    if (type === 'in') {
+      opacity += (now - last) / duration;
+    }else{
+      opacity -= (now - last) / duration;
+    }
+
+    target.style.opacity = opacity;
+    target.style.filter = 'alpha(opacity=' + (100 * opacity)|0 + ')';
+
+    last = now;
+
+    if ((type === 'in' && opacity < goal) || (type === 'out' && opacity > goal)) {
+      requestAnimationFramePolyfill(frame);
+    }else if (type === 'out') {
+        target.style.display = 'none';
+    }
+  };
+
+  frame();
+}
+
 var subtitle = document.getElementById('dynamic-subtitle');
 var actualSubtitles;
 var subtitles = [
   [
     'a web developper',
     'a mad scientist    !',
-    'nice to see you',
-    'good visit',
+    'not afraid of challenges',
+    'let\'s be authentic',
+    'Keep It Simple & Stupid',
   ],
   [
-    'don\'t forget, character can move',
+    'don\'t forget you can move',
     'i took an arrow in the knee',
     'little sis, stops playing',
     'todo: put a subtitle',
@@ -505,6 +508,17 @@ changeSubtitle(0);
 
 // On load
 
+var start = Date.now();
+
 onload(function(){
-  fade('out',document.getElementById('preloader'));
+  var elapsed_time = Date.now() - start;
+  var delay = elapsed_time >= 300 ? 0 : 300 - elapsed_time;
+
+  setTimeout(function(){
+    fade('out',document.getElementById('preloader'));
+  }, delay);
 });
+
+setTimeout(function () {
+  fade('out',document.getElementById('preloader')); // max time to show loader
+}, 1000);
