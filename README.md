@@ -1,6 +1,6 @@
 # This is my portfolio !
 
-I'm still working on it, i took considerable time to make few pixel art (and it's not really that we can call perfect). The background was not made by me, will add the copyright soon.
+I'm still working on it, background and character were not made by me, will add the copyright soon.
 
 You can find it at [https://mimyka.github.io/](https://mimyka.github.io/) or simply download it with this command line
 

@@ -80,6 +80,11 @@ if (isMobileDevice) {
 // VAR INIT
 var app = document.getElementsByClassName('app')[0];
 
+function defer(func, wait) {
+  var args = Array.prototype.slice.call(arguments, 2);
+  return setTimeout(function(){ return func.apply(null, args); }, wait);
+}
+
 var sections = {
   nodeList: document.getElementsByClassName('section'),
   lazy: document.getElementsByTagName('img'),
@@ -122,10 +127,7 @@ var sections = {
       sections.actual = (sections.actual <= 0)? sections.nodeList.length-1 : sections.actual-1;
     }
     if (sections.forceMoving) {
-      setTimeout(function(){
-        control.reset();
-        sections.forceMoving = false;
-      },500);
+      setTimeout(sections.forceMove.reset, 500);
     }
     sections.actualise();
   },
@@ -137,7 +139,13 @@ var sections = {
     left: function(){
       sections.forceMoving = true;
       control.left = true;
-    }
+    },
+    reset: function(){
+      if (sections.forceMoving) {
+        control.reset();
+        sections.forceMoving = false;
+      }
+    },
   }
 };
 
@@ -146,12 +154,10 @@ var character = {
   pos: {x: 50, y: 0},
   speed: {x: 0.7, y: 25},
   direction: "left",
-  tmp: {},
   moving: false,
   jumping: false,
-  inMoveFrame: false,
-  inJumpFrame: false,
-  jumpDelay: 250,
+  inFrame: false,
+  jumpDelay: 150,
   setTransition: function(){
     character.node.classList.add('transition');
   },
@@ -160,44 +166,53 @@ var character = {
       character.node.classList.remove('transition');
     }
   },
-  moveFrame: function(){
-    if (!character.inMoveFrame) {
-      character.inMoveFrame = true;
-
-      setTimeout(function() {
-        character.node.classList.add('walk-1');
-        setTimeout(function() {
-          if (character.node.classList.contains('walk-1')) {
-            character.node.classList.remove('walk-1');
-          }
-          character.node.classList.add('walk-2');
-        }, 100);
-      }, 100);
-
-      setTimeout(function() {
-        if (character.node.classList.contains('walk-1')) {
-          character.node.classList.remove('walk-1');
-        }
-        if (character.node.classList.contains('walk-2')) {
-          character.node.classList.remove('walk-2');
-        }
-        character.inMoveFrame = false;
-      }, 300);
+  frame: function(params){
+    if (!params.hasOwnProperty('classname') || !params.hasOwnProperty('delay')) {
+      throw new Error('Frame property is missing some required parameters.');
     }
+    if (!params.hasOwnProperty('iteration')) {
+      params.iteration = 0;
+    }
+    if (!params.hasOwnProperty('separator')) {
+      params.separator = '-';
+    }
+
+    if (!character.inFrame) {
+      character.inFrame = true;
+      for (var i = 0; i <= params.iteration; i++) {
+
+        var formatted_classname = params.classname+((i !== 0)? (params.separator+i) : '');
+
+        defer(function(formatted_classname, _i, iteration){
+          character.node.classList.add(formatted_classname);
+
+          defer(function(formatted_classname, _i, iteration){
+            if (character.node.classList.contains(formatted_classname)) {
+              character.node.classList.remove(formatted_classname);
+            }
+            if (_i===iteration) {
+              character.inFrame = false;
+            }
+          }, params.delay, formatted_classname, _i, iteration);
+
+        }, params.delay*i, formatted_classname, i, params.iteration);
+      }
+    }
+
+  },
+  moveFrame: function(){
+    character.frame({
+      classname: 'walk',
+      iteration: 8,
+      delay: 50
+    });
   },
   jumpFrame: function(){
-    if (!character.inJumpFrame) {
-      character.inJumpFrame = true;
-      character.node.classList.add('jump');
-      setTimeout(function(){
-        if (character.node.classList.contains('jump')) {
-          character.node.classList.remove('jump');
-        }
-        setTimeout(function(){
-          character.inJumpFrame = false;
-        },character.jumpDelay);
-      }, 150);
-    }
+    character.frame({
+      classname: 'walk',
+      iteration: 2,
+      delay: character.jumpDelay/2
+    });
   },
   paint: function(){
     if (character.moving) {
@@ -219,9 +234,9 @@ var character = {
     }
     if (character.direction !== d) {
       character.direction = d;
-      character.tmp.inverseDirection = (d == "left")? "right" : "left";
-      if (character.node.classList.contains('direction--'+character.tmp.inverseDirection)) {
-        character.node.classList.remove('direction--'+character.tmp.inverseDirection);
+      var oppositeDirection = (d == "left")? "right" : "left";
+      if (character.node.classList.contains('direction--'+oppositeDirection)) {
+        character.node.classList.remove('direction--'+oppositeDirection);
       }
       character.node.classList.add('direction--'+character.direction);
     }
@@ -248,14 +263,6 @@ var character = {
           setTimeout(function(){
             character.jumping = false;
           },character.jumpDelay);
-        },150);
-      }
-    },
-    down: function(){
-      if (!character.jumping) { // in waiting of draw
-        character.jumping = true;
-        setTimeout(function(){
-          character.jumping = false;
         },character.jumpDelay);
       }
     }
@@ -371,7 +378,6 @@ window.onkeyup = function(e) {
 function gameloop(){
   if (control.left && control.right) {
     control.reset();
-    sections.forceMoving = false;
   }
 
   if (control.left) {
@@ -387,7 +393,7 @@ function gameloop(){
   }
 
   if (control.down) {
-    character.move.down();
+    // character.move.down();
   }
 
   character.paint();

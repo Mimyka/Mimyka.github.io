@@ -144,20 +144,16 @@ hr {
 .doorL, .doorR ,.character{
   position: absolute;
   bottom: 0;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  -ms-interpolation-mode: nearest-neighbor;
 }
 
 .character{
   left: 50%;
   height: 111px;
-  width: 75px;
+  width: 111px;
   z-index: 10;
   background: url(../img/character_tileset.png) 0 0 no-repeat;
-  background-size: cover;
-  margin-left: -37px;
+  margin-left: -55px;
+  margin-bottom: -11px;
 }
 
 .character.transition{
@@ -174,32 +170,58 @@ body.mobile .character.transition{
 }
 
 .character.direction--left.walk-1{
-  background-position: -75px 0;
+  background-position: -111px 0;
 }
-
 .character.direction--left.walk-2{
-  background-position: -150px 0;
+  background-position: -222px 0;
 }
-
-.character.direction--left.jump{
-  background-position: -225px 0;
+.character.direction--left.walk-3{
+  background-position: -333px 0;
+}
+.character.direction--left.walk-4{
+  background-position: -444px 0;
+}
+.character.direction--left.walk-5{
+  background-position: -555px 0;
+}
+.character.direction--left.walk-6{
+  background-position: -666px 0;
+}
+.character.direction--left.walk-7{
+  background-position: -777px 0;
+}
+.character.direction--left.walk-8{
+  background-position: -888px 0;
 }
 
 .character.direction--right{
-  background-position: -300px 0;
+  background-position: 0 -111px;
 }
-
 .character.direction--right.walk-1{
-  background-position: -375px 0;
+  background-position: -111px -111px;
 }
-
 .character.direction--right.walk-2{
-  background-position: -450px 0;
+  background-position: -222px -111px;
+}
+.character.direction--right.walk-3{
+  background-position: -333px -111px;
+}
+.character.direction--right.walk-4{
+  background-position: -444px -111px;
+}
+.character.direction--right.walk-5{
+  background-position: -555px -111px;
+}
+.character.direction--right.walk-6{
+  background-position: -666px -111px;
+}
+.character.direction--right.walk-7{
+  background-position: -777px -111px;
+}
+.character.direction--right.walk-8{
+  background-position: -888px -111px;
 }
 
-.character.direction--right.jump{
-  background-position: -525px 0;
-}
 
 .doorL, .doorR{
   height: 120px;
