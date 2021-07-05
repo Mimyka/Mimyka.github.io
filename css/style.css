@@ -31,7 +31,7 @@ h3{
   font-size: 20px;
 }
 
-p{
+body{
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   line-height: 28px;
@@ -224,7 +224,7 @@ body.mobile .character.transition{
 
 
 .doorL, .doorR{
-  height: 120px;
+  height: 70px;
   cursor: pointer;
 }
 
@@ -288,11 +288,11 @@ body.mobile .character.transition{
 
 .dialog h1{
   line-height: 30px;
-  font-size: 41px;
+  font-size: 38px;
 }
 
 .dialog h2{
-  font-size: 20px;
+  font-size: 18px;
   color: #393939;
 }
 
@@ -398,6 +398,20 @@ body.mobile .character.transition{
 }
 
 /*Bootstrap*/
+
+.badge{
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    color: #fff;
+    background-color: #6c757d;
+}
 
 .text-center{
   text-align: center;
@@ -723,15 +737,13 @@ body.mobile .character.transition{
 
 /* Font awesome */
 
-.fab{
+.fa{
   -moz-osx-font-smoothing:grayscale;
   -webkit-font-smoothing:antialiased;
   display:inline-block;
   font-style:normal;
   font-variant:normal;
   text-rendering:auto;
-  line-height:1
-}
-.fa-github:before{
-  content:"\f09b"
+  line-height:1;
+  width : 1em;
 }

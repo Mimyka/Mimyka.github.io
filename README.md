@@ -6,16 +6,8 @@ You can find it at [https://mimyka.github.io/](https://mimyka.github.io/) or sim
 
     git clone https://github.com/Mimyka/Mimyka.github.io.git
 
-# In progress
-
-Most of things are in progress, here are few of them :
-
- - Refresh my own picture and add some progress bars that never be usefull (progress bars didn't mean anything)
- - Optimize javascript
- - Put content, it's really empty
-
 # Compatibility
-As i said, it's not achieve, but i perform some test and i'll be happy if you can wrote yours. (in case of problem)
+I perform some test and i'll be happy if you can wrote yours. (in case of problem)
 
 Actually working on :
 

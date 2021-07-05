@@ -153,7 +153,7 @@ var character = {
   node: document.getElementsByClassName('character')[0],
   pos: {x: 50, y: 0},
   speed: {x: 0.7, y: 25},
-  direction: "left",
+  direction: "right",
   moving: false,
   jumping: false,
   inFrame: false,
@@ -452,18 +452,17 @@ var subtitle = document.getElementById('dynamic-subtitle');
 var actualSubtitles;
 var subtitles = [
   [
-    'a web developper',
-    'a mad scientist    !',
-    'not afraid of challenges',
-    'let\'s be authentic',
-    'Keep It Simple & Stupid',
+    'Développeur web',
+    'J\'aime les challenges',
+    'Spécialisé en Back-end',
+    'Symfony BFF',
+    'root@manjaro:~$',
   ],
   [
-    'don\'t forget you can move',
+    'N\'oubliez pas... il y a d\'autres sections sur ce site',
     'i took an arrow in the knee',
-    'little sis, stops playing',
-    'todo: put a subtitle',
-  ]
+    'TODO: put a subtitle',
+  ],
 ];
 
 var last, actual;
@@ -528,3 +527,6 @@ onload(function(){
 setTimeout(function () {
   fade('out',document.getElementById('preloader')); // max time to show loader
 }, 1000);
+
+console.log("var character =");
+console.log(character);
