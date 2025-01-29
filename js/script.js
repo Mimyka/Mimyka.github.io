@@ -516,12 +516,7 @@ changeSubtitle(0);
 var start = Date.now();
 
 onload(function(){
-  var elapsed_time = Date.now() - start;
-  var delay = elapsed_time >= 300 ? 0 : 300 - elapsed_time;
-
-  setTimeout(function(){
-    fade('out',document.getElementById('preloader'));
-  }, delay);
+  fade('out',document.getElementById('preloader'));
 });
 
 setTimeout(function () {
