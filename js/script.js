@@ -527,6 +527,3 @@ onload(function(){
 setTimeout(function () {
   fade('out',document.getElementById('preloader')); // max time to show loader
 }, 1000);
-
-console.log("var character =");
-console.log(character);
